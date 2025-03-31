@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fyp/consts/app_colors.dart';
+import 'package:fyp/widgets/subtitle_text.dart';
+import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
+import 'package:fyp/widgets/subtitle_text.dart';
+import 'package:fyp/widgets/title_text.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,12 +21,10 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Hello world",
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-              ),
+            SubtitleTextWidget(
+              label: "Hello world!!!",
+            ),
+            TitlesTextWidget(label: "Hello this is a title",
             ),
             ElevatedButton(onPressed: () {}, child: const Text("Hello world")),
             SwitchListTile(
