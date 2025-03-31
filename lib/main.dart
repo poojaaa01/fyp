@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           title: 'ShopSmart EN',
           theme: Styles.themeData(
               isDarkTheme: themeProvider.getIsDarkTheme, context: context),
-          home: const HomeScreen(),
+          home: const RootScreen(),
         );
       }),
     );
