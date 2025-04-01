@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/services/assets_manager.dart';
+import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
             AssetsManager.logoApp,
         ),
       ),
-        title: const Text("Profile Screen"),
+        title: AppNameTextWidget(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
