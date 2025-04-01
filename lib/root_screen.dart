@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:fyp/screens/cart_screen.dart';
+import 'package:fyp/screens/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
-import 'package:fyp/screens/search_screen.dart';
+import 'package:fyp/screens/act_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -16,15 +16,15 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   late List<Widget> screens;
-  int currentScreen = 0;
+  int currentScreen = 3;
   late PageController controller;
   @override
   void initState() {
     super.initState();
     screens = const [
       HomeScreen(),
-      SearchScreen(),
-      CartScreen(),
+      MedScreen(),
+      BookScreen(),
       ProfileScreen(),
     ];
     controller = PageController(initialPage: currentScreen);
@@ -40,7 +40,7 @@ class _RootScreenState extends State<RootScreen> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentScreen,
-        //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 10,
         height: kBottomNavigationBarHeight,
         onDestinationSelected: (index) {
@@ -56,14 +56,14 @@ class _RootScreenState extends State<RootScreen> {
             label: "Home",
           ),
           NavigationDestination(
-            selectedIcon: Icon(IconlyBold.search),
-            icon: Icon(IconlyLight.search),
-            label: "Search",
+            selectedIcon: Icon(IconlyBold.heart),
+            icon: Icon(IconlyLight.heart),
+            label: "Meditation",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.bag2),
             icon: Icon(IconlyLight.bag2),
-            label: "Cart",
+            label: "Appointment",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.profile),

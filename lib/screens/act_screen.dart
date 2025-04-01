@@ -4,14 +4,14 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../widgets/title_text.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class MedScreen extends StatelessWidget {
+  const MedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: TitlesTextWidget(label: "CartScreen"),
+        child: TitlesTextWidget(label: "Meditation"),
       ),
     );
   }
