@@ -1,7 +1,7 @@
 class AssetsManager {
   static String imagesPath = "assets/images";
   static String profileImagesPath = "assets/images/profile";
-  static String bagImagesPath = "assets/images/app";
+  static String appImagesPath = "assets/images/app";
   static String bannersImagesPath = "assets/images/banners";
   static String categoriesImagesPath = "assets/images/categories";
 
@@ -29,7 +29,9 @@ class AssetsManager {
   static String light = "$profileImagesPath/light.png";
 
   // App
-  static String logoApp = "$bagImagesPath/logo.jpg";
+  static String logoApp = "$appImagesPath/logo.jpg";
+  static String noApt = "$appImagesPath/apt.jpg";
+
 
   // Banners
   static String banner1 = "$bannersImagesPath/banner1.png";
