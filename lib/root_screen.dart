@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:fyp/screens/book_screen.dart';
+import 'package:fyp/screens/appointment/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
 import 'package:fyp/screens/act_screen.dart';

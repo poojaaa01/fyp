@@ -27,134 +27,137 @@ class ProfileScreen extends StatelessWidget {
       ),
         title: AppNameTextWidget(),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        const Visibility(
-          visible: false,
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: const TitlesTextWidget(
-                label: "Please login to have access"),
-          ),
-        ),
-          Visibility(
-            visible: true,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          const Visibility(
+            visible: false,
             child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            child: Row(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).cardColor,
-                    border: Border.all(
-                        color: Colors.deepPurple,
-                      width: 3),
-                    image: const DecorationImage(
-                      image: NetworkImage(
-                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
+              padding: const EdgeInsets.all(18.0),
+              child: const TitlesTextWidget(
+                  label: "Please login to have access"),
+            ),
+          ),
+            Visibility(
+              visible: true,
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).cardColor,
+                      border: Border.all(
+                          color: Colors.deepPurple,
+                        width: 3),
+                      image: const DecorationImage(
+                        image: NetworkImage(
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
+                      ),
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                      fit: BoxFit.fill,
-                    ),
+                ),
+                  SizedBox(
+                    width: 10,
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      TitlesTextWidget(label: "Pooja Pantha"),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      SubtitleTextWidget(label: "panthapooja5@gmail.com")
+                    ],
+                  )
+                ],
               ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    TitlesTextWidget(label: "Pooja Pantha"),
-                    SizedBox(
-                      height: 6,
+            ),
+            ),
+            SizedBox(height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  const TitlesTextWidget(
+                      label: "General",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomListTile(
+                    text: "Recent Activity",
+                    imagePath: AssetsManager.activity,
+                    function: (){},
+                  ),
+                  CustomListTile(
+                    text: "Streaks",
+                    imagePath: AssetsManager.progress,
+                    function: (){},
+                  ),
+                  CustomListTile(
+                    text: "Set a reminder",
+                    imagePath: AssetsManager.reminder,
+                    function: (){},
+                  ),
+                  CustomListTile(
+                    text: "Analysis",
+                    imagePath: AssetsManager.analysis,
+                    function: (){},
+                  ),
+                  const SizedBox(height: 6),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  const TitlesTextWidget(
+                    label: "Settings",
+                  ),
+                  const SizedBox(height: 10),
+                  SwitchListTile(
+                    secondary: Image.asset(
+                      themeProvider.getIsDarkTheme ? AssetsManager.dark : AssetsManager.light,
+                      height: 34,
                     ),
-                    SubtitleTextWidget(label: "panthapooja5@gmail.com")
-                  ],
-                )
-              ],
-            ),
-          ),
-          ),
-          SizedBox(height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(
-                  thickness: 2,
-                ),
-                const TitlesTextWidget(
-                    label: "General",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomListTile(
-                  text: "Recent Activity",
-                  imagePath: AssetsManager.activity,
-                  function: (){},
-                ),
-                CustomListTile(
-                  text: "Streaks",
-                  imagePath: AssetsManager.progress,
-                  function: (){},
-                ),
-                CustomListTile(
-                  text: "Set a reminder",
-                  imagePath: AssetsManager.reminder,
-                  function: (){},
-                ),
-                CustomListTile(
-                  text: "Analysis",
-                  imagePath: AssetsManager.analysis,
-                  function: (){},
-                ),
-                const SizedBox(height: 6),
-                const Divider(
-                  thickness: 2,
-                ),
-                const TitlesTextWidget(
-                  label: "Settings",
-                ),
-                const SizedBox(height: 10),
-                SwitchListTile(
-                  secondary: Image.asset(
-                    themeProvider.getIsDarkTheme ? AssetsManager.dark : AssetsManager.light,
-                    height: 34,
+                    title: Text(
+                        themeProvider.getIsDarkTheme ? "Dark Mode" : "Light Mode"
+                    ),
+                    value: themeProvider.getIsDarkTheme,
+                    onChanged: (value) {
+                      themeProvider.setDarkTheme(themeValue: value);
+                    },
                   ),
-                  title: Text(
-                      themeProvider.getIsDarkTheme ? "Dark Mode" : "Light Mode"
+                  const Divider(
+                    thickness: 2,
                   ),
-                  value: themeProvider.getIsDarkTheme,
-                  onChanged: (value) {
-                    themeProvider.setDarkTheme(themeValue: value);
-                  },
-                ),
-                const Divider(
-                  thickness: 2,
-                ),
-                const TitlesTextWidget(
-                  label: "Others",
-                ),
-              ],
+                  const TitlesTextWidget(
+                    label: "Others",
+                  ),
+                ],
+              ),
             ),
-          ),
-          Center(
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white60,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0,),),),
-                onPressed:(){},
-                icon: const Icon(Icons.login),
-                label: const Text("Log Out")
+            Center(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white60,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0,),),),
+                  onPressed:(){},
+                  icon: const Icon(Icons.login),
+                  label: const Text("Log Out")
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
