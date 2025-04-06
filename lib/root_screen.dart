@@ -62,7 +62,11 @@ class _RootScreenState extends State<RootScreen> {
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.bag2),
-            icon: Icon(IconlyLight.bag2),
+            icon: Badge(
+                child: Icon(IconlyLight.bag2),
+                label: Text("5"),
+            ),
+
             label: "Appointment",
           ),
           NavigationDestination(
