@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fyp/screens/appointment/bottom_confirm.dart';
 import 'package:fyp/widgets/empty_apt.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 
@@ -22,6 +23,7 @@ final bool isEmpty = false;
           buttonText: "Book an Appointment")
       )
         : Scaffold(
+      bottomSheet: const AptBottomSheetWidget(),
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
