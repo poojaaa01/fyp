@@ -7,6 +7,7 @@ import 'package:fyp/consts/app_colors.dart';
 import 'package:fyp/consts/app_constants.dart';
 import 'package:fyp/services/assets_manager.dart';
 import 'package:fyp/widgets/app_name_text.dart';
+import 'package:fyp/widgets/products/popular_doc.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 15,
@@ -59,6 +61,22 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
+            const SizedBox(
+              height: 15.0,
+            ),
+            const TitlesTextWidget(label: "Popular Doctors"),
+            const SizedBox(
+              height: 15.0,
+            ),
+            SizedBox(
+              height: size.height * 0.2,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return PopularDoctorsWidget();
+                  }),
+            )
           ],
         ),
       ),
