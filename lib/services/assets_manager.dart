@@ -3,7 +3,7 @@ class AssetsManager {
   static String profileImagesPath = "assets/images/profile";
   static String appImagesPath = "assets/images/app";
   static String bannersImagesPath = "assets/images/banners";
-  static String categoriesImagesPath = "assets/images/categories";
+  static String start_journeyImagesPath = "assets/images/start_journey";
 
 // general images
   static String forgotPassword = "$imagesPath/forgot_password.jpg";
@@ -37,13 +37,10 @@ class AssetsManager {
   static String banner1 = "$bannersImagesPath/q1.jpg";
   static String banner2 = "$bannersImagesPath/q2.jpg";
   static String banner3 = "$bannersImagesPath/q3.png";
-  // Categories path
-  static String mobiles = "$categoriesImagesPath/mobiles.png";
-  static String fashion = "$categoriesImagesPath/fashion.png";
-  static String watch = "$categoriesImagesPath/watch.png";
-  static String book = "$categoriesImagesPath/book_img.png";
-  static String electronics = "$categoriesImagesPath/electronics.png";
-  static String cosmetics = "$categoriesImagesPath/cosmetics.png";
-  static String shoes = "$categoriesImagesPath/shoes.png";
-  static String pc = "$categoriesImagesPath/pc.png";
+
+  // start_journey path
+  static String calm = "$start_journeyImagesPath/calm.png";
+  static String mood = "$start_journeyImagesPath/mood.jpg";
+  static String community = "$start_journeyImagesPath/community.png";
+  static String focus = "$start_journeyImagesPath/focus.png";
 }

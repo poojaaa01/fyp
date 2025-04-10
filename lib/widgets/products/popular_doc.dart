@@ -39,15 +39,21 @@ class PopularDoctorsWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                width: 5,
+                width: 8,
               ),
               Flexible(
                 child: Column(
                   children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
                     Text(
                       "Title" * 5,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      width: 5,
                     ),
                     FittedBox(
                       child: Row(
@@ -69,6 +75,9 @@ class PopularDoctorsWidget extends StatelessWidget {
                       icon: const Icon(
                         Icons.add_shopping_cart,
                       ),
+                    ),
+                    const SizedBox(
+                      width: 5,
                     ),
                     const FittedBox(
                       child: SubtitleTextWidget(
