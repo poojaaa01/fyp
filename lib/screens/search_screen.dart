@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fyp/widgets/products/doc_widget.dart';
 import '../services/assets_manager.dart';
 import '../widgets/title_text.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
@@ -48,6 +49,9 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              const SizedBox(
+                height: 15.0,
+              ),
               TextField(
                 controller: searchTextController,
                 decoration: InputDecoration(
@@ -72,12 +76,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   log("value of the controller text: ${searchTextController.text}");
                 },
               ),
+              const SizedBox(
+                height: 15.0,
+              ),
               Expanded(
-                child: DynamicHeightGridView
-                  (builder: (context, index){
-                  return Center(
-                    child: Text(index.toString()),
-                  );
+                child: DynamicHeightGridView(
+                  mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    builder: (context, index){
+                  return const DocWidget();
                 },
                     itemCount: 200,
                     crossAxisCount: 2
