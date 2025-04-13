@@ -1,8 +1,11 @@
 import 'package:fyp/models/start_model.dart';
 import 'package:fyp/services/assets_manager.dart';
 
-
 class AppConstants{
+
+  static const String imageUrl =
+      'https://www.shutterstock.com/image-vector/male-doctor-smiling-happy-face-600nw-2481032615.jpg';
+
   static List<String> bannersImages = [
     AssetsManager.banner1,
     AssetsManager.banner2,

@@ -5,7 +5,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/screens/appointment/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
-import 'package:fyp/screens/act_screen.dart';
+import 'package:fyp/screens/search_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -16,14 +16,14 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   late List<Widget> screens;
-  int currentScreen = 0;
+  int currentScreen = 1;
   late PageController controller;
   @override
   void initState() {
     super.initState();
     screens = const [
       HomeScreen(),
-      MedScreen(),
+      SearchScreen(),
       BookScreen(),
       ProfileScreen(),
     ];
@@ -58,7 +58,7 @@ class _RootScreenState extends State<RootScreen> {
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.heart),
             icon: Icon(IconlyLight.heart),
-            label: "Meditation",
+            label: "Search",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.bag2),
