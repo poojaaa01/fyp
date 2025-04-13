@@ -5,7 +5,7 @@ class AssetsManager {
   static String bannersImagesPath = "assets/images/banners";
   static String start_journeyImagesPath = "assets/images/start_journey";
 
-// general images
+  // general images
   static String forgotPassword = "$imagesPath/forgot_password.jpg";
   static String mapRounded = "$imagesPath/rounded_map.png";
   static String warning = "$imagesPath/warning.png";
@@ -31,7 +31,6 @@ class AssetsManager {
   // App
   static String logoApp = "$appImagesPath/logo.jpg";
   static String noApt = "$appImagesPath/apt.jpg";
-
 
   // Banners
   static String banner1 = "$bannersImagesPath/q1.jpg";

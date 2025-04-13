@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
@@ -12,11 +10,7 @@ class AptBottomSheetWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border(
-            top: BorderSide(
-              width: 1.5,
-              color: Colors.grey,
-            ))
+        border: Border(top: BorderSide(width: 1.5, color: Colors.grey)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -29,15 +23,12 @@ class AptBottomSheetWidget extends StatelessWidget {
                 children: [
                   TitlesTextWidget(label: "Total"),
                   SubtitleTextWidget(
-                      label: "Rs.\1600",
-                      color: Colors.deepPurple,
-                  )
+                    label: "Rs.1600",
+                    color: Colors.deepPurple,
+                  ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: (){},
-                child: const Text("Checkout"),
-              )
+              ElevatedButton(onPressed: () {}, child: const Text("Checkout")),
             ],
           ),
         ),

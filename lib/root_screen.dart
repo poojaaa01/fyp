@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/screens/appointment/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
@@ -56,16 +54,13 @@ class _RootScreenState extends State<RootScreen> {
             label: "Home",
           ),
           NavigationDestination(
-            selectedIcon: Icon(IconlyBold.heart),
-            icon: Icon(IconlyLight.heart),
+            selectedIcon: Icon(IconlyBold.search),
+            icon: Icon(IconlyLight.search),
             label: "Search",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.bag2),
-            icon: Badge(
-                child: Icon(IconlyLight.bag2),
-                label: Text("5"),
-            ),
+            icon: Badge(label: Text("5"), child: Icon(IconlyLight.bag2)),
 
             label: "Appointment",
           ),
@@ -79,4 +74,3 @@ class _RootScreenState extends State<RootScreen> {
     );
   }
 }
-

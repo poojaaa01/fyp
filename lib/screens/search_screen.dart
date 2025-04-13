@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fyp/widgets/products/doc_widget.dart';
 import '../services/assets_manager.dart';
 import '../widgets/title_text.dart';
@@ -29,71 +27,65 @@ class _SearchScreenState extends State<SearchScreen> {
     searchTextController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-          appBar: AppBar(
+        appBar: AppBar(
           leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-      child: Image.asset(
-      AssetsManager.logoApp,
-      ),
-      ),
-      title: const TitlesTextWidget(label: "Search Doctors"),
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(AssetsManager.logoApp),
           ),
+          title: const TitlesTextWidget(label: "Search Doctors"),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               TextField(
                 controller: searchTextController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       //setState(() {
                       FocusScope.of(context).unfocus();
                       searchTextController.clear();
-                    //});
-                      },
-                    child: const Icon(
-                        Icons.clear,
-                      color: Colors.blueGrey,
-                    ),
+                      //});
+                    },
+                    child: const Icon(Icons.clear, color: Colors.blueGrey),
                   ),
                 ),
-                onChanged: (value){
+                onChanged: (value) {
                   log("Value of the text is $value");
                 },
-                onSubmitted: (value){
+                onSubmitted: (value) {
                   log("Value of the text is $value");
-                  log("value of the controller text: ${searchTextController.text}");
+                  log(
+                    "value of the controller text: ${searchTextController.text}",
+                  );
                 },
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               Expanded(
                 child: DynamicHeightGridView(
                   mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    builder: (context, index){
-                  return const DocWidget();
-                },
-                    itemCount: 200,
-                    crossAxisCount: 2
+                  crossAxisSpacing: 12,
+                  builder: (context, index) {
+                    return const DocWidget();
+                  },
+                  itemCount: 200,
+                  crossAxisCount: 2,
                 ),
               ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

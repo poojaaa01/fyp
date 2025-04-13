@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 class HeartButtonWidget extends StatefulWidget {
@@ -21,17 +19,11 @@ class _HeartButtonWidgetState extends State<HeartButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: widget.bkgColor,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: widget.bkgColor, shape: BoxShape.circle),
       child: IconButton(
         style: IconButton.styleFrom(elevation: 10),
         onPressed: () {},
-        icon: Icon(
-            IconlyLight.heart,
-          size: widget.size,
-        ),
+        icon: Icon(IconlyLight.heart, size: widget.size),
       ),
     );
   }

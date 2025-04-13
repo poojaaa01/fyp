@@ -1,23 +1,16 @@
-import 'dart:developer';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:fyp/consts/app_colors.dart';
 import 'package:fyp/consts/app_constants.dart';
 import 'package:fyp/services/assets_manager.dart';
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/products/popular_doc.dart';
 import 'package:fyp/widgets/products/start_rounded_widget.dart';
-import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
-import 'package:fyp/widgets/subtitle_text.dart';
-import 'package:fyp/widgets/title_text.dart';
 
 class HomeScreen extends StatelessWidget {
-   const HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +20,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            AssetsManager.logoApp,
-          ),
+          child: Image.asset(AssetsManager.logoApp),
         ),
         title: const AppNameTextWidget(fontSize: 20),
       ),
@@ -39,63 +30,56 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 15),
               SizedBox(
-                height: 15,
-              ),
-            SizedBox(
-              height: size.height * 0.25,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Swiper(autoplay: true,
-                  itemBuilder: (BuildContext context,int index){
-                    return Image.asset(
-                      AppConstants.bannersImages[index],
-                      fit: BoxFit.fill,
-                    );
-                  },
-                  itemCount: AppConstants.bannersImages.length,
-                  pagination: SwiperPagination(
-                    //alignment: Alignment.center
-                    builder: DotSwiperPaginationBuilder(
-                        activeColor: Colors.amber, color: Colors.white,
+                height: size.height * 0.25,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Swiper(
+                    autoplay: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Image.asset(
+                        AppConstants.bannersImages[index],
+                        fit: BoxFit.fill,
+                      );
+                    },
+                    itemCount: AppConstants.bannersImages.length,
+                    pagination: SwiperPagination(
+                      //alignment: Alignment.center
+                      builder: DotSwiperPaginationBuilder(
+                        activeColor: Colors.amber,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               const TitlesTextWidget(label: "Popular Doctors"),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               SizedBox(
                 height: size.height * 0.2,
                 child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return PopularDoctorsWidget();
-                    }),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return PopularDoctorsWidget();
+                  },
+                ),
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               const TitlesTextWidget(label: "Start Your Journey"),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const SizedBox(height: 15.0),
               GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 4,
-                  children: List.generate(AppConstants.startList.length, (index){
-                    return StartRoundedWidget(
-                        image: AppConstants.startList[index].image,
-                        name: AppConstants.startList[index].name
-                    );
-                  }),
+                children: List.generate(AppConstants.startList.length, (index) {
+                  return StartRoundedWidget(
+                    image: AppConstants.startList[index].image,
+                    name: AppConstants.startList[index].name,
+                  );
+                }),
               ),
             ],
           ),

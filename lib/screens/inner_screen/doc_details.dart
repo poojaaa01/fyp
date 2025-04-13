@@ -1,13 +1,9 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/title_text.dart';
 
 import '../../consts/app_constants.dart';
-import '../../services/assets_manager.dart';
 import '../../widgets/app_name_text.dart';
 import '../../widgets/subtitle_text.dart';
 
@@ -66,7 +62,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                       ),
                       const SizedBox(width: 20),
                       const SubtitleTextWidget(
-                        label: "\Rs. 1550",
+                        label: "Rs. 1550",
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: Colors.blueAccent,
@@ -79,7 +75,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        HeartButtonWidget(bkgColor: Colors.blue.shade100,),
+                        HeartButtonWidget(bkgColor: Colors.blue.shade100),
                         const SizedBox(width: 20),
                         Expanded(
                           child: SizedBox(
