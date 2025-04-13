@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/root_screen.dart';
+import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
@@ -28,6 +29,10 @@ class MyApp extends StatelessWidget {
           theme: Styles.themeData(
               isDarkTheme: themeProvider.getIsDarkTheme, context: context),
           home: const RootScreen(),
+          routes: {
+           DocDetailsScreen.routName: (context) =>
+               const DocDetailsScreen(),
+          },
         );
       }),
     );

@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import '../../consts/app_constants.dart';
+import '../../screens/inner_screen/doc_details.dart';
 import '../subtitle_text.dart';
 
 
@@ -19,8 +20,9 @@ class PopularDoctorsWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
-          log("ToDo add the navigate to the product details screen");
+        onTap: () async {
+          await Navigator.pushNamed(context, DocDetailsScreen.routName,
+          );
         },
         child: SizedBox(
           width: size.width * 0.45,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
@@ -25,8 +26,8 @@ class _DocWidgetState extends State<DocWidget> {
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
-        onTap: (){
-          log("ToDo add the navigate to the product details screen");
+        onTap: () async {
+          await Navigator.pushNamed(context, DocDetailsScreen.routName);
         },
         child: Column(
           children: [
