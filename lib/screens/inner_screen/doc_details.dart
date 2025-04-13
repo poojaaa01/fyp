@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/title_text.dart';
 
 import '../../consts/app_constants.dart';
@@ -78,17 +79,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade200,
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            style: IconButton.styleFrom(elevation: 10),
-                            onPressed: () {},
-                            icon: Icon(IconlyLight.heart),
-                          ),
-                        ),
+                        HeartButtonWidget(bkgColor: Colors.blue.shade100,),
                         const SizedBox(width: 20),
                         Expanded(
                           child: SizedBox(

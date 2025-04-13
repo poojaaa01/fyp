@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
+import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
@@ -53,10 +54,9 @@ class _DocWidgetState extends State<DocWidget> {
                       maxLines: 2,
                     ),
                   ),
-                  Flexible(
+                  const Flexible(
                     flex: 2,
-                      child: IconButton(onPressed: (){}, icon: Icon(IconlyLight.heart),
-                      ),
+                      child: HeartButtonWidget(),
                   ),
                 ],
               ),

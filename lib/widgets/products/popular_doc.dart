@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fyp/widgets/products/heart_btn.dart';
 
 import '../../consts/app_constants.dart';
 import '../../screens/inner_screen/doc_details.dart';
@@ -63,19 +64,14 @@ class PopularDoctorsWidget extends StatelessWidget {
                           const SizedBox(
                             height: 5,
                           ),
+                          const HeartButtonWidget(),
                           IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              IconlyLight.heart,
+                              Icons.add_shopping_cart,
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add_shopping_cart,
                       ),
                     ),
                     const SizedBox(

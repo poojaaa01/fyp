@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/consts/app_constants.dart';
+import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
@@ -50,12 +51,7 @@ class BookWidget extends StatelessWidget {
                                   color: Colors.red,
                                 ),
                               ),
-                              IconButton(
-                                onPressed: (){},
-                                icon: const Icon(
-                                  IconlyLight.heart,
-                                ),
-                              ),
+                              const HeartButtonWidget(),
                             ],
                           ),
                         ],
