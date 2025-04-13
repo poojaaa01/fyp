@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
+import 'package:fyp/services/app_functions.dart';
 import 'package:fyp/services/assets_manager.dart';
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
@@ -86,7 +87,9 @@ class ProfileScreen extends StatelessWidget {
                     imagePath: AssetsManager.activity,
                     function: () {
                       Navigator.pushNamed(
-                          context, RecentActivityScreen.routName);
+                        context,
+                        RecentActivityScreen.routName,
+                      );
                     },
                   ),
                   CustomListTile(
@@ -136,9 +139,15 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                 ),
-                onPressed: () {},
                 icon: const Icon(Icons.login),
-                label: const Text("Log Out"),
+                label: const Text("Login"),
+                onPressed: () async {
+                  await AppFunctions.showErrorOrWarningDialog(
+                      context: context, subtitle: "Are you sure you want to sign out?",
+                      fct: (){},
+                    isError: false,
+                  );
+                },
               ),
             ),
           ],
@@ -155,6 +164,7 @@ class CustomListTile extends StatelessWidget {
     required this.text,
     required this.function,
   });
+
   final String imagePath, text;
   final Function function;
 
