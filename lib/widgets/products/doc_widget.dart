@@ -86,7 +86,9 @@ class _DocWidgetState extends State<DocWidget> {
                         splashColor: Colors.yellow,
                           child: const Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: Icon(Icons.add_shopping_cart_outlined),
+                            child: Icon(
+                                Icons.shopping_bag,
+                            ),
                           ),
                           ),
                     ),
