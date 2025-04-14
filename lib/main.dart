@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/root_screen.dart';
+import 'package:fyp/screens/auth/login.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
               isDarkTheme: themeProvider.getIsDarkTheme,
               context: context,
             ),
-            home: const RootScreen(),
+            //home: const RootScreen(),
+            home: LoginScreen(),
             routes: {
               DocDetailsScreen.routName: (context) => const DocDetailsScreen(),
 
