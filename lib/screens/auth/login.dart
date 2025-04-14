@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/consts/validator.dart';
 import 'package:fyp/widgets/app_name_text.dart';
+import 'package:fyp/widgets/auth/google_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
@@ -145,22 +146,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(12.0),
-                              backgroundColor: Colors.white60,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  12.0,
+                      SizedBox(
+                        height: kBottomNavigationBarHeight + 10,
+                        child: Row(
+                          children: [
+                            const Expanded(
+                              flex: 2,
+                              child: SizedBox(
+                                  height: kBottomNavigationBarHeight + 10,
+                                  child: FittedBox(child: GoogleButton(),
+                                  ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                height: kBottomNavigationBarHeight + 10,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(12.0),
+                                    backgroundColor: Colors.white60,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        12.0,
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Text("Guest?"),
+                                  onPressed: () async {},
                                 ),
                               ),
                             ),
-                            child: const Text("Guest?"),
-                            onPressed: () async {},
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 16.0,
