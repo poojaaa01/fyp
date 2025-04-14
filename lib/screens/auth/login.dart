@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/consts/validator.dart';
+import 'package:fyp/screens/auth/register.dart';
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/auth/google_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
@@ -21,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late final FocusNode _emailFocusNode;
   late final FocusNode _passwordFocusNode;
+  bool obscureText = true;
 
   final _formkey = GlobalKey<FormState>();
 
@@ -94,13 +96,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16.0),
                       TextFormField(
+                        obscureText: obscureText,
                         controller: _passwordController,
                         focusNode: _passwordFocusNode,
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.visiblePassword,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            },
+                            icon: Icon(
+                              obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                          ),
                           hintText: "Password",
-                          prefixIcon: Icon(IconlyLight.lock),
+                          prefixIcon: const Icon(IconlyLight.lock),
                         ),
                         onFieldSubmitted: (value) async {
                           await _loginFct();
@@ -192,10 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextButton(
                             onPressed: () {},
                             child: const SubtitleTextWidget(
-                              label: "Forgot password?",
+                              label: "Sign up now",
                               fontStyle: FontStyle.italic,
                               textDecoration: TextDecoration.underline,
                             ),
+                            onLongPress: () {
+                              Navigator.of(context)
+                                  .pushNamed(RegisterScreen.routName);
+                            },
                           ),
                         ],
                       )

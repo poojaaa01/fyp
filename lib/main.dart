@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/login.dart';
+import 'package:fyp/screens/auth/register.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
 import 'package:provider/provider.dart';
@@ -35,10 +36,12 @@ class MyApp extends StatelessWidget {
             ),
             //home: const RootScreen(),
             home: LoginScreen(),
+            //home: RegisterScreen(),
             routes: {
               DocDetailsScreen.routName: (context) => const DocDetailsScreen(),
 
               RecentActivityScreen.routName: (context) => const RecentActivityScreen(),
+              RegisterScreen.routName: (context) => const RegisterScreen(),
             },
           );
         },
