@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/consts/validator.dart';
+import 'package:fyp/services/app_functions.dart';
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
@@ -10,6 +11,7 @@ import '../../widgets/auth/image_picker_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routName = "/RegisterScreen";
+
   const RegisterScreen({super.key});
 
   @override
@@ -30,6 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formkey = GlobalKey<FormState>();
   XFile? _pickedImage;
+
   @override
   void initState() {
     _nameController = TextEditingController();
@@ -65,9 +68,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
     FocusScope.of(context).unfocus();
   }
 
+  Future<void> localImagePicker() async {
+    final ImagePicker imagePicker = ImagePicker();
+    await AppFunctions.imagePickerDialog(
+      context: context,
+      cameraFCT: () async {
+        _pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
+        setState(() {
+        });
+      },
+      galleryFCT: () async {
+        _pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+        setState(() {
+        });
+      },
+      removeFCT:() {setState(() {
+        _pickedImage = null;
+      });}
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -94,7 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TitlesTextWidget(label: "Welcome back!"),
-                        SubtitleTextWidget(label: "Sign up to begin your journey to a calmer mind."),
+                        SubtitleTextWidget(
+                            label: "Sign up to begin your journey to a calmer mind."),
                       ],
                     )),
                 const SizedBox(
@@ -102,11 +127,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(
                   height: size.width * 0.3,
-                    width: size.width * 0.3,
-                    child: PickImageWidget(
-                      pickedImage: _pickedImage,
-                      function: (){},
-                    ),
+                  width: size.width * 0.3,
+                  child: PickImageWidget(
+                    pickedImage: _pickedImage,
+                    function: () async {
+                      await localImagePicker();
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 30,

@@ -34,9 +34,8 @@ class MyApp extends StatelessWidget {
               isDarkTheme: themeProvider.getIsDarkTheme,
               context: context,
             ),
-            //home: const RootScreen(),
-            home: LoginScreen(),
-            //home: RegisterScreen(),
+            home: const RootScreen(),
+            //home: LoginScreen(),
             routes: {
               DocDetailsScreen.routName: (context) => const DocDetailsScreen(),
 
