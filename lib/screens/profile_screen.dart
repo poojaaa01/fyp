@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../widgets/title_text.dart';
+import 'auth/login.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -140,13 +141,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 icon: const Icon(Icons.login),
-                label: const Text("Login"),
+                label: const Text("Log Out"),
                 onPressed: () async {
-                  await AppFunctions.showErrorOrWarningDialog(
-                      context: context, subtitle: "Are you sure you want to sign out?",
-                      fct: (){},
-                    isError: false,
-                  );
+                  Navigator.pushNamed(context, LoginScreen.routeName);
+                  //await AppFunctions.showErrorOrWarningDialog(
+                      //context: context, subtitle: "Are you sure you want to sign out?",
+                      //fct: (){},
+                    //isError: false,
+                  //);
                 },
               ),
             ),

@@ -7,9 +7,11 @@ import 'package:fyp/widgets/auth/google_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
+import '../../root_screen.dart';
 import '../../services/app_functions.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/LoginScreen';
   const LoginScreen({super.key});
 
   @override
@@ -190,7 +192,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   child: const Text("Guest?"),
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    Navigator.of(context)
+                                        .pushNamed(RootScreen.routeName);
+                                  },
                                 ),
                               ),
                             ),

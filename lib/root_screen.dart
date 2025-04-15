@@ -6,6 +6,7 @@ import 'package:fyp/screens/profile_screen.dart';
 import 'package:fyp/screens/search_screen.dart';
 
 class RootScreen extends StatefulWidget {
+  static const routeName = '/RootScreen';
   const RootScreen({super.key});
 
   @override
