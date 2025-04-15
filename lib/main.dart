@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/root_screen.dart';
+import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
 import 'package:fyp/screens/auth/register.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
@@ -42,6 +43,8 @@ class MyApp extends StatelessWidget {
               RecentActivityScreen.routName: (context) => const RecentActivityScreen(),
               RegisterScreen.routName: (context) => const RegisterScreen(),
               LoginScreen.routeName: (context) => const LoginScreen(),
+              ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+
             },
           );
         },
