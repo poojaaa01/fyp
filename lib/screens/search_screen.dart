@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/widgets/products/doc_widget.dart';
 import '../services/assets_manager.dart';
 import '../widgets/title_text.dart';
@@ -74,13 +75,17 @@ class _SearchScreenState extends State<SearchScreen> {
               const SizedBox(height: 15.0),
               Expanded(
                 child: DynamicHeightGridView(
+                  itemCount: DoctorType.doctors.length,
+                  crossAxisCount: 2,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   builder: (context, index) {
-                    return const DocWidget();
+                    return DocWidget(
+                      image: DoctorType.doctors[index].docImage,
+                      price: DoctorType.doctors[index].docPrice,
+                      title: DoctorType.doctors[index].docTitle,
+                    );
                   },
-                  itemCount: 200,
-                  crossAxisCount: 2,
                 ),
               ),
             ],

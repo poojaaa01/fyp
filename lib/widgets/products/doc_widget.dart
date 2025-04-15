@@ -8,7 +8,14 @@ import 'package:fyp/widgets/title_text.dart';
 import '../../consts/app_constants.dart';
 
 class DocWidget extends StatefulWidget {
-  const DocWidget({super.key});
+  const DocWidget({
+    super.key,
+    this.title,
+    this.price,
+    this.image,
+  });
+
+  final String? image, title, price;
 
   @override
   State<DocWidget> createState() => _DocWidgetState();
@@ -29,7 +36,7 @@ class _DocWidgetState extends State<DocWidget> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
               child: FancyShimmerImage(
-                imageUrl: AppConstants.imageUrl,
+                imageUrl: widget.image ?? AppConstants.imageUrl,
                 height: size.height * 0.22,
                 width: double.infinity,
               ),
@@ -42,7 +49,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 5,
                     child: TitlesTextWidget(
-                      label: "Title " * 10,
+                      label: widget.title ??"Title " * 10,
                       fontSize: 18,
                       maxLines: 2,
                     ),
@@ -60,7 +67,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 1,
                     child: SubtitleTextWidget(
-                      label: "Rs. 1550",
+                      label: "${widget.price}" ?? "1550",
                       fontWeight: FontWeight.w600,
                       color: Colors.blueAccent,
                     ),
