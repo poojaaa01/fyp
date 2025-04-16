@@ -16,6 +16,19 @@ class DocProvider with ChangeNotifier {
     return doctors.firstWhere((element) => element.docId == docId);
   }
 
+  List<DoctorType> searchQuery({required String searchText}) {
+    List<DoctorType> searchList = doctors
+        .where(
+          (element) => element.docTitle.toLowerCase().contains(
+        searchText.toLowerCase(),
+      ),
+    )
+        .toList();
+    return searchList;
+  }
+
+
+
   List<DoctorType> doctors = [
     DoctorType(
       docId: 'psychiatrist-001',

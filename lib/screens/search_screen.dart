@@ -31,6 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
+  List<DoctorType> doctorListSearch = [];
   @override
   Widget build(BuildContext context) {
     final docProvider = Provider.of<DocProvider>(context);
@@ -54,6 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
               TextField(
                 controller: searchTextController,
                 decoration: InputDecoration(
+                  hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: GestureDetector(
                     onTap: () {
@@ -66,26 +68,39 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 onChanged: (value) {
-                  log("Value of the text is $value");
+                  setState(() {
+                    doctorListSearch = docProvider.searchQuery(
+                        searchText: searchTextController.text
+                    );
+                  });
                 },
                 onSubmitted: (value) {
-                  log("Value of the text is $value");
-                  log(
-                    "value of the controller text: ${searchTextController.text}",
-                  );
+                  setState(() {
+                    doctorListSearch = docProvider.searchQuery(
+                        searchText: searchTextController.text
+                    );
+                  });
                 },
               ),
               const SizedBox(height: 15.0),
+              if(searchTextController.text.isNotEmpty && doctorListSearch.isEmpty)...[
+                const Center(
+                  child: TitlesTextWidget(label: "No doctor found",),
+                ),
+              ],
               Expanded(
                 child: DynamicHeightGridView(
-                  itemCount: docProvider.getDoctors.length,
+                  itemCount: searchTextController.text.isNotEmpty
+                      ? doctorListSearch.length
+                      : docProvider.getDoctors.length,
                   crossAxisCount: 2,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   builder: (context, index) {
                     return DocWidget(
-                      docId:
-                      docProvider.getDoctors[index].docId,
+                      docId: searchTextController.text.isNotEmpty
+                          ? doctorListSearch [index].docId
+                          : docProvider.getDoctors[index].docId,
                     );
                   },
                 ),
