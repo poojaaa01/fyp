@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/screens/appointment/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
 import 'package:fyp/screens/search_screen.dart';
+import 'package:provider/provider.dart';
 
 class RootScreen extends StatefulWidget {
   static const routeName = '/RootScreen';
@@ -31,6 +33,7 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final aptProvider = Provider.of<AptProvider>(context);
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
@@ -48,24 +51,24 @@ class _RootScreenState extends State<RootScreen> {
           });
           controller.jumpToPage(currentScreen);
         },
-        destinations: const [
-          NavigationDestination(
+        destinations: [
+          const NavigationDestination(
             selectedIcon: Icon(IconlyBold.home),
             icon: Icon(IconlyLight.home),
             label: "Home",
           ),
-          NavigationDestination(
+          const NavigationDestination(
             selectedIcon: Icon(IconlyBold.search),
             icon: Icon(IconlyLight.search),
             label: "Search",
           ),
           NavigationDestination(
-            selectedIcon: Icon(IconlyBold.bag2),
-            icon: Badge(label: Text("5"), child: Icon(IconlyLight.bag2)),
+            selectedIcon: const Icon(IconlyBold.bag2),
+            icon: Badge(label: Text(aptProvider.getAptitems.length.toString()), child: const Icon(IconlyLight.bag2)),
 
             label: "Appointment",
           ),
-          NavigationDestination(
+          const NavigationDestination(
             selectedIcon: Icon(IconlyBold.profile),
             icon: Icon(IconlyLight.profile),
             label: "Profile",

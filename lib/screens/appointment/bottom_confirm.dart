@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/appointment_provider.dart';
+import '../../providers/doc_provider.dart';
 
 class AptBottomSheetWidget extends StatelessWidget {
   const AptBottomSheetWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final docProvider = Provider.of<DocProvider>(context);
+    final aptProvider = Provider.of<AptProvider>(context);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -23,7 +29,7 @@ class AptBottomSheetWidget extends StatelessWidget {
                 children: [
                   TitlesTextWidget(label: "Total"),
                   SubtitleTextWidget(
-                    label: "Rs.1600",
+                    label: "${aptProvider.getTotal(docProvider: docProvider)}",
                     color: Colors.deepPurple,
                   ),
                 ],

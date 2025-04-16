@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fyp/models/appointment_model.dart';
 import 'package:uuid/uuid.dart';
 
+import 'doc_provider.dart';
+
 class AptProvider with ChangeNotifier {
   final Map<String, AptModel> _aptItems = {};
   Map<String, AptModel> get getAptitems {
@@ -19,5 +21,18 @@ class AptProvider with ChangeNotifier {
 
   bool isDocinApt({required String docId}) {
     return _aptItems.containsKey(docId);
+  }
+
+  double getTotal({required DocProvider docProvider}){
+    double total = 0.0;
+    _aptItems.forEach((key, value) {
+      final getCurrDoctor = docProvider.findByDocId(value.docId);
+      if(getCurrDoctor == null){
+        total += 0;
+      } else{
+        total += double.parse(getCurrDoctor.docPrice);
+      }
+    });
+    return total;
   }
 }

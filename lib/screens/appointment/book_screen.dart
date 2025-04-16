@@ -41,11 +41,20 @@ class BookScreen extends StatelessWidget {
               ),
             ],
           ),
-          body: ListView.builder(
-            itemCount: aptProvider.getAptitems.length,
-            itemBuilder: (context, index) {
-              return const BookWidget();
-            },
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: aptProvider.getAptitems.length,
+                  itemBuilder: (context, index) {
+                    return ChangeNotifierProvider.value(
+                        value: aptProvider.getAptitems.values.toList()[index],
+                        child: const BookWidget());
+                  },
+                ),
+              ),
+              SizedBox(height: kBottomNavigationBarHeight + 10,)
+            ],
           ),
         );
   }

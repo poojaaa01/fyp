@@ -5,6 +5,10 @@ import 'package:fyp/consts/app_constants.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/appointment_model.dart';
+import '../../providers/doc_provider.dart';
 
 class BookWidget extends StatelessWidget {
   const BookWidget({super.key});
@@ -12,7 +16,13 @@ class BookWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return FittedBox(
+    final cartModel = Provider.of<AptModel>(context);
+    final docProvider = Provider.of<DocProvider>(context);
+    final getCurrDoctor = docProvider.findByDocId(cartModel.docId);
+
+    return getCurrDoctor == null
+        ? const SizedBox.shrink()
+        : FittedBox(
       child: IntrinsicWidth(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -22,7 +32,7 @@ class BookWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: FancyShimmerImage(
-                  imageUrl: AppConstants.imageUrl,
+                  imageUrl: getCurrDoctor.docImage,
                   height: size.height * 0.2,
                   width: size.height * 0.2,
                 ),
@@ -36,7 +46,7 @@ class BookWidget extends StatelessWidget {
                         SizedBox(
                           width: size.width * 0.6,
                           child: TitlesTextWidget(
-                            label: "Title" * 15,
+                            label: getCurrDoctor.docTitle,
                             maxLines: 2,
                           ),
                         ),
@@ -53,22 +63,22 @@ class BookWidget extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const SubtitleTextWidget(
-                          label: "Rs.1600",
+                         SubtitleTextWidget(
+                          label: getCurrDoctor.docPrice,
                           color: Colors.blue,
                         ),
                         const Spacer(),
-                        OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(IconlyLight.arrowDown2),
-                          label: const Text("Qty: 1"),
-                          style: OutlinedButton.styleFrom(
-                            //side: BorderSide(width: 2),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
+                        // OutlinedButton.icon(
+                        //   onPressed: () {},
+                        //   icon: const Icon(IconlyLight.arrowDown2),
+                        //   label: const Text("Qty: 1"),
+                        //   style: OutlinedButton.styleFrom(
+                        //     //side: BorderSide(width: 2),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(30.0),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
