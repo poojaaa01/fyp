@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Moksha App',
             theme: Styles.themeData(
               isDarkTheme: themeProvider.getIsDarkTheme,

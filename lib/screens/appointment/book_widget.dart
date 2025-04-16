@@ -8,6 +8,7 @@ import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/appointment_model.dart';
+import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
 
 class BookWidget extends StatelessWidget {
@@ -19,6 +20,7 @@ class BookWidget extends StatelessWidget {
     final cartModel = Provider.of<AptModel>(context);
     final docProvider = Provider.of<DocProvider>(context);
     final getCurrDoctor = docProvider.findByDocId(cartModel.docId);
+    final aptProvider = Provider.of<AptProvider>(context);
 
     return getCurrDoctor == null
         ? const SizedBox.shrink()
@@ -53,7 +55,9 @@ class BookWidget extends StatelessWidget {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                aptProvider.removeOneItem(docId: getCurrDoctor.docId);
+                              },
                               icon: const Icon(Icons.clear, color: Colors.red),
                             ),
                             const HeartButtonWidget(),

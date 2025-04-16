@@ -47,6 +47,7 @@ class AppFunctions {
                   ),
                   TextButton(
                     onPressed: () {
+                      fct();
                       Navigator.pop(context);
                     },
                     child: SubtitleTextWidget(label: "Ok", color: Colors.green),

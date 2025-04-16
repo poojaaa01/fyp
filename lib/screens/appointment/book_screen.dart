@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/screens/appointment/bottom_confirm.dart';
+import 'package:fyp/services/app_functions.dart';
 import 'package:fyp/widgets/empty_apt.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,13 @@ class BookScreen extends StatelessWidget {
             title: TitlesTextWidget(label: "Appointment (${aptProvider.getAptitems.length})"),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppFunctions.showErrorOrWarningDialog(
+                    isError: false,
+                      context: context, subtitle: "Are you sure?", fct: (){
+                    aptProvider.clearLocalAppointment();
+                  });
+                },
                 icon: const Icon(Icons.delete_forever_rounded),
               ),
             ],

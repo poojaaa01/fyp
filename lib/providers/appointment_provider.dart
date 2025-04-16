@@ -35,4 +35,14 @@ class AptProvider with ChangeNotifier {
     });
     return total;
   }
+
+  void clearLocalAppointment () {
+    _aptItems.clear();
+    notifyListeners();
+  }
+
+  void removeOneItem({required String docId}){
+    _aptItems.remove(docId);
+    notifyListeners();
+  }
 }
