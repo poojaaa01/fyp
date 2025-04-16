@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/widgets/products/doc_widget.dart';
+import 'package:provider/provider.dart';
+import '../providers/doc_provider.dart';
 import '../services/assets_manager.dart';
 import '../widgets/title_text.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
@@ -31,6 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final docProvider = Provider.of<DocProvider>(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -75,15 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
               const SizedBox(height: 15.0),
               Expanded(
                 child: DynamicHeightGridView(
-                  itemCount: DoctorType.doctors.length,
+                  itemCount: docProvider.getDoctors.length,
                   crossAxisCount: 2,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   builder: (context, index) {
-                    return DocWidget(
-                      image: DoctorType.doctors[index].docImage,
-                      price: DoctorType.doctors[index].docPrice,
-                      title: DoctorType.doctors[index].docTitle,
+                    return ChangeNotifierProvider.value(
+                      value: docProvider.getDoctors[index],
+                      child: const DocWidget(),
                     );
                   },
                 ),

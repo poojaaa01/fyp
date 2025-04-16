@@ -1,21 +1,16 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
-import 'package:fyp/widgets/title_text.dart';
-
-import '../../consts/app_constants.dart';
+import 'package:provider/provider.dart';
+import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
   const DocWidget({
     super.key,
-    this.title,
-    this.price,
-    this.image,
   });
-
-  final String? image, title, price;
 
   @override
   State<DocWidget> createState() => _DocWidgetState();
@@ -24,6 +19,7 @@ class DocWidget extends StatefulWidget {
 class _DocWidgetState extends State<DocWidget> {
   @override
   Widget build(BuildContext context) {
+    final doctorTypeProvider = Provider.of<DoctorType>(context);
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(0.0),
@@ -36,7 +32,7 @@ class _DocWidgetState extends State<DocWidget> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
               child: FancyShimmerImage(
-                imageUrl: widget.image ?? AppConstants.imageUrl,
+                imageUrl: doctorTypeProvider.docImage,
                 height: size.height * 0.22,
                 width: double.infinity,
               ),
@@ -49,7 +45,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 5,
                     child: TitlesTextWidget(
-                      label: widget.title ??"Title " * 10,
+                      label: doctorTypeProvider.docTitle,
                       fontSize: 18,
                       maxLines: 2,
                     ),
@@ -67,7 +63,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 1,
                     child: SubtitleTextWidget(
-                      label: "${widget.price}" ?? "1550",
+                      label: "${doctorTypeProvider.docPrice}",
                       fontWeight: FontWeight.w600,
                       color: Colors.blueAccent,
                     ),

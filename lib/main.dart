@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) {
             return ThemeProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return DocProvider();
           },
         ),
       ],
