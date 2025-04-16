@@ -2,10 +2,13 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/title_text.dart';
+import 'package:provider/provider.dart';
 
 import '../../consts/app_constants.dart';
+import '../../providers/doc_provider.dart';
 import '../../widgets/app_name_text.dart';
 import '../../widgets/subtitle_text.dart';
+
 
 class DocDetailsScreen extends StatefulWidget {
   static const routName = "/DocDetailsScreen";
@@ -20,6 +23,9 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final docProvider = Provider.of<DocProvider>(context);
+    String? docId = ModalRoute.of(context)!.settings.arguments as String?;
+    final getCurrDoctor = docProvider.findByDocId(docId!);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -34,11 +40,11 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
         ),
         title: const AppNameTextWidget(fontSize: 20),
       ),
-      body: SingleChildScrollView(
+      body: getCurrDoctor == null ? const SizedBox.shrink(): SingleChildScrollView(
         child: Column(
           children: [
             FancyShimmerImage(
-              imageUrl: AppConstants.imageUrl,
+              imageUrl: getCurrDoctor.docImage,
               height: size.height * 0.38,
               width: double.infinity,
             ),
@@ -52,7 +58,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                     children: [
                       Flexible(
                         child: Text(
-                          "Title" * 18,
+                          getCurrDoctor.docTitle,
                           softWrap: true,
                           style: const TextStyle(
                             fontSize: 20,
@@ -61,8 +67,8 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                         ),
                       ),
                       const SizedBox(width: 20),
-                      const SubtitleTextWidget(
-                        label: "Rs. 1550",
+                      SubtitleTextWidget(
+                        label: getCurrDoctor.docPrice,
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: Colors.blueAccent,
@@ -97,9 +103,14 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(children: [TitlesTextWidget(label: "About the Doctor")]),
+                   Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const TitlesTextWidget(label: "About the Doctor"),
+                        SubtitleTextWidget(label: getCurrDoctor.docCategory)
+                      ]),
                   const SizedBox(height: 15),
-                  SubtitleTextWidget(label: "Description"),
+                  SubtitleTextWidget(label: getCurrDoctor.docDescription),
                 ],
               ),
             ),

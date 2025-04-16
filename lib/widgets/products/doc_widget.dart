@@ -32,7 +32,10 @@ class _DocWidgetState extends State<DocWidget> {
       padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
         onTap: () async {
-          await Navigator.pushNamed(context, DocDetailsScreen.routName,
+          await Navigator.pushNamed(
+            context,
+            DocDetailsScreen.routName,
+            arguments: getCurrDoctor.docId,
           );
         },
         child: Column(
