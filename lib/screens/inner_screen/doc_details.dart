@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
-
-import '../../consts/app_constants.dart';
+import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
 import '../../widgets/app_name_text.dart';
 import '../../widgets/subtitle_text.dart';
@@ -26,6 +25,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
     final docProvider = Provider.of<DocProvider>(context);
     String? docId = ModalRoute.of(context)!.settings.arguments as String?;
     final getCurrDoctor = docProvider.findByDocId(docId!);
+    final aptProvider = Provider.of<AptProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -93,9 +93,19 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
                               ),
-                              onPressed: () {},
-                              icon: const Icon(Icons.shopping_bag),
-                              label: const Text("Make an appointment"),
+                              onPressed: () {
+                                if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
+                                  return;
+                                }
+                                aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
+                              },
+                              icon: Icon(aptProvider.isDocinApt(
+                                  docId: getCurrDoctor.docId)
+                                  ? Icons.check
+                                  : Icons.shopping_bag_outlined),
+                              label: Text(aptProvider.isDocinApt(
+                                  docId: getCurrDoctor.docId)
+                                  ?"Finalize your appointment" :"Make an appointment"),
                             ),
                           ),
                         ),

@@ -5,6 +5,7 @@ import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
+import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
 import '../title_text.dart';
 
@@ -25,6 +26,7 @@ class _DocWidgetState extends State<DocWidget> {
     //final doctorTypeProvider = Provider.of<DoctorType>(context);
     final docProvider = Provider.of<DocProvider>(context);
     final getCurrDoctor = docProvider.findByDocId(widget.docId);
+    final aptProvider = Provider.of<AptProvider>(context);
     Size size = MediaQuery.of(context).size;
     return getCurrDoctor == null
         ? const SizedBox.shrink()
@@ -85,11 +87,20 @@ class _DocWidgetState extends State<DocWidget> {
                       //color: Colors.lightBlue,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12.0),
-                        onTap: () {},
+                        onTap: () {
+                          if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
+                            return;
+                          }
+                          aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
+                        },
                         splashColor: Colors.yellow,
-                        child: const Padding(
-                          padding: EdgeInsets.all(6.0),
-                          child: Icon(Icons.shopping_bag),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Icon(
+                            aptProvider.isDocinApt(
+                                docId: getCurrDoctor.docId)
+                                ? Icons.check
+                                : Icons.shopping_bag_outlined),
                         ),
                       ),
                     ),

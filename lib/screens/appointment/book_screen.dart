@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/screens/appointment/bottom_confirm.dart';
 import 'package:fyp/widgets/empty_apt.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/appointment_provider.dart';
 import '../../services/assets_manager.dart';
 import '../../widgets/title_text.dart';
 import 'book_widget.dart';
@@ -11,8 +13,11 @@ class BookScreen extends StatelessWidget {
   final bool isEmpty = false;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return isEmpty
+    //Size size = MediaQuery.of(context).size;
+    //final docProvider = Provider.of<DocProvider>(context);
+    final aptProvider = Provider.of<AptProvider>(context);
+
+    return aptProvider.getAptitems.isEmpty
         ? Scaffold(
           body: EmptyAptWidget(
             imagePath: AssetsManager.noApt,
@@ -28,7 +33,7 @@ class BookScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(AssetsManager.logoApp),
             ),
-            title: const TitlesTextWidget(label: "Appointment"),
+            title: TitlesTextWidget(label: "Appointment (${aptProvider.getAptitems.length})"),
             actions: [
               IconButton(
                 onPressed: () {},
@@ -37,7 +42,7 @@ class BookScreen extends StatelessWidget {
             ],
           ),
           body: ListView.builder(
-            itemCount: 10,
+            itemCount: aptProvider.getAptitems.length,
             itemBuilder: (context, index) {
               return const BookWidget();
             },
