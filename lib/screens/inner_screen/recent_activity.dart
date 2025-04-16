@@ -44,7 +44,7 @@ class RecentActivityScreen extends StatelessWidget {
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             builder: (context, index) {
-              return const DocWidget();
+              return const DocWidget(docId: "",);
             },
             itemCount: 200,
             crossAxisCount: 2,

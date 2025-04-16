@@ -83,9 +83,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   builder: (context, index) {
-                    return ChangeNotifierProvider.value(
-                      value: docProvider.getDoctors[index],
-                      child: const DocWidget(),
+                    return DocWidget(
+                      docId:
+                      docProvider.getDoctors[index].docId,
                     );
                   },
                 ),

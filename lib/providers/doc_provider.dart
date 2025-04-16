@@ -9,6 +9,13 @@ class DocProvider with ChangeNotifier {
     return doctors;
   }
 
+  DoctorType? findByDocId (String docId){
+    if(doctors.where((element) => element.docId == docId).isEmpty){
+      return null;
+    }
+    return doctors.firstWhere((element) => element.docId == docId);
+  }
+
   List<DoctorType> doctors = [
     DoctorType(
       docId: 'psychiatrist-001',

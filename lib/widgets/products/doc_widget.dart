@@ -5,13 +5,16 @@ import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
+import '../../providers/doc_provider.dart';
 import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
   const DocWidget({
-    super.key,
+    super.key, required this.docId,
   });
 
+
+  final String docId;
   @override
   State<DocWidget> createState() => _DocWidgetState();
 }
@@ -19,20 +22,25 @@ class DocWidget extends StatefulWidget {
 class _DocWidgetState extends State<DocWidget> {
   @override
   Widget build(BuildContext context) {
-    final doctorTypeProvider = Provider.of<DoctorType>(context);
+    //final doctorTypeProvider = Provider.of<DoctorType>(context);
+    final docProvider = Provider.of<DocProvider>(context);
+    final getCurrDoctor = docProvider.findByDocId(widget.docId);
     Size size = MediaQuery.of(context).size;
-    return Padding(
+    return getCurrDoctor == null
+        ? const SizedBox.shrink()
+        :Padding(
       padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
         onTap: () async {
-          await Navigator.pushNamed(context, DocDetailsScreen.routName);
+          await Navigator.pushNamed(context, DocDetailsScreen.routName,
+          );
         },
         child: Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
               child: FancyShimmerImage(
-                imageUrl: doctorTypeProvider.docImage,
+                imageUrl: getCurrDoctor.docImage,
                 height: size.height * 0.22,
                 width: double.infinity,
               ),
@@ -45,7 +53,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 5,
                     child: TitlesTextWidget(
-                      label: doctorTypeProvider.docTitle,
+                      label: getCurrDoctor.docTitle,
                       fontSize: 18,
                       maxLines: 2,
                     ),
@@ -63,7 +71,7 @@ class _DocWidgetState extends State<DocWidget> {
                   Flexible(
                     flex: 1,
                     child: SubtitleTextWidget(
-                      label: "${doctorTypeProvider.docPrice}",
+                      label: "${getCurrDoctor.docPrice}",
                       fontWeight: FontWeight.w600,
                       color: Colors.blueAccent,
                     ),
