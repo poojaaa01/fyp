@@ -9,12 +9,15 @@ import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 
+import '../providers/doc_provider.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final docProvider = Provider.of<DocProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +66,9 @@ class HomeScreen extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return PopularDoctorsWidget();
+                    return ChangeNotifierProvider.value(
+                      value: docProvider.getDoctors[index],
+                        child: PopularDoctorsWidget());
                   },
                 ),
               ),
