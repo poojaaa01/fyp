@@ -88,7 +88,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
         if (!mounted) return;
         Navigator.pushReplacementNamed(context, RootScreen.routeName);
-      } catch (error) {
+      }on FirebaseException catch (error) {
+        await AppFunctions.showErrorOrWarningDialog(
+          context: context,
+          subtitle: error.message.toString(),
+          fct: () {},
+        );
+      }catch(error){
         await AppFunctions.showErrorOrWarningDialog(
           context: context,
           subtitle: error.toString(),

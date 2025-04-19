@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
@@ -21,47 +22,70 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) {
-            return ThemeProvider();
-          },
-        ),
-        ChangeNotifierProvider(
-          create: (_) {
-            return DocProvider();
-          },
-        ),
-        ChangeNotifierProvider(
-          create: (_) {
-            return AptProvider();
-          },
-        ),
-      ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Moksha App',
-            theme: Styles.themeData(
-              isDarkTheme: themeProvider.getIsDarkTheme,
-              context: context,
+    return FutureBuilder<FirebaseApp>(
+        future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator()),
+              ),
+            );
+          }else if (snapshot.hasError) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                body: Center(
+                  child: SelectableText(snapshot.error.toString()),
+                ),
+              ),
+            );
+          }
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) {
+                return ThemeProvider();
+              },
             ),
-            //home: const RootScreen(),
-            home: LoginScreen(),
-            routes: {
-              DocDetailsScreen.routName: (context) => const DocDetailsScreen(),
-              RootScreen.routeName: (context) => const RootScreen(),
-              RecentActivityScreen.routName: (context) => const RecentActivityScreen(),
-              RegisterScreen.routName: (context) => const RegisterScreen(),
-              LoginScreen.routeName: (context) => const LoginScreen(),
-              ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+            ChangeNotifierProvider(
+              create: (_) {
+                return DocProvider();
+              },
+            ),
+            ChangeNotifierProvider(
+              create: (_) {
+                return AptProvider();
+              },
+            ),
+          ],
+          child: Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Moksha App',
+                theme: Styles.themeData(
+                  isDarkTheme: themeProvider.getIsDarkTheme,
+                  context: context,
+                ),
+                //home: const RootScreen(),
+                home: LoginScreen(),
+                routes: {
+                  DocDetailsScreen.routName: (context) => const DocDetailsScreen(),
+                  RootScreen.routeName: (context) => const RootScreen(),
+                  RecentActivityScreen.routName: (context) => const RecentActivityScreen(),
+                  RegisterScreen.routName: (context) => const RegisterScreen(),
+                  LoginScreen.routeName: (context) => const LoginScreen(),
+                  ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
 
+                },
+              );
             },
-          );
-        },
-      ),
+          ),
+        );
+      }
     );
   }
 }
