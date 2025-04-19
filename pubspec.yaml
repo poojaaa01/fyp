@@ -44,6 +44,14 @@ dependencies:
   ionicons: ^0.2.2
   image_picker: ^1.1.2
   uuid: ^4.5.1
+  fluttertoast: ^8.2.12
+
+  #firebase
+  firebase_core: ^3.13.0
+  firebase_auth: ^5.5.2
+  cloud_firestore: ^5.6.6
+  firebase_storage: ^12.4.5
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:

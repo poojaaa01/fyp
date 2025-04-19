@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "452772394918",
+    "project_id": "moksha-cfee1",
+    "storage_bucket": "moksha-cfee1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452772394918:android:7a32396158f7ba42774167",
+        "android_client_info": {
+          "package_name": "com.example.fyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxXBtHkkwxNXCBWKx3h_Rp0wniQk_zH-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
