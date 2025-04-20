@@ -95,8 +95,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             shape: BoxShape.circle,
                             color: Theme.of(context).cardColor,
                             border: Border.all(
-                              color: Colors.deepPurple,
-                              width: 3,
+                              //color: Colors.deepPurple,
+                              //width: 2,
                             ),
                             image: DecorationImage(
                               image: NetworkImage(userModel!.userImage),

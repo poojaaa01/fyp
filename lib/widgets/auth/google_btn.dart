@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,28 +30,42 @@ class GoogleButton extends StatelessWidget {
         idToken: googleAuth.idToken,
       );
 
-      final authResult =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final authResult = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+      if(authResult.additionalUserInfo!.isNewUser){
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(authResult.user!.uid)
+            .set({
+          'userId': authResult.user!.uid,
+          'userName': authResult.user!.displayName,
+          'userImage': authResult.user!.photoURL,
+          'userEmail': authResult.user!.email,
+          'createdAt': Timestamp.now(),
+          'userAppointment': [],
+        });
+      }
 
       if (authResult.user != null) {
-        print("✅ Google Sign-In success: ${authResult.user?.email}");
+        print("Google Sign-In success: ${authResult.user?.email}");
 
         // Navigate to the root screen
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, RootScreen.routeName);
         }
       } else {
-        print("⚠️ Google Sign-In returned null user.");
+        print("Google Sign-In returned null user.");
       }
     } on FirebaseAuthException catch (e) {
-      print("🔥 FirebaseAuthException: ${e.message}");
+      print("FirebaseAuthException: ${e.message}");
       await AppFunctions.showErrorOrWarningDialog(
         context: context,
         subtitle: e.message ?? "Unknown FirebaseAuth error",
         fct: () {},
       );
     } catch (e) {
-      print("🔥 Error during Google Sign-In: $e");
+      print("Error during Google Sign-In: $e");
       await AppFunctions.showErrorOrWarningDialog(
         context: context,
         subtitle: e.toString(),
