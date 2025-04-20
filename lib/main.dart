@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
+import 'package:fyp/providers/user_provider.dart';
 import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
@@ -58,6 +59,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (_) {
                 return AptProvider();
+              },
+            ),
+            ChangeNotifierProvider(
+              create: (_) {
+                return UserProvider();
               },
             ),
           ],
