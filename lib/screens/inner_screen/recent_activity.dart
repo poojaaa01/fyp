@@ -2,7 +2,10 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/screens/appointment/bottom_confirm.dart';
 import 'package:fyp/widgets/empty_apt.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/recent_activity_provider.dart';
+import '../../services/app_functions.dart';
 import '../../services/assets_manager.dart';
 import '../../widgets/products/doc_widget.dart';
 import '../../widgets/title_text.dart';
@@ -17,7 +20,8 @@ class RecentActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return isEmpty
+    final recentActProvider = Provider.of<RecentActivityProvider>(context);
+    return recentActProvider.getViewedDoc.isEmpty
         ? Scaffold(
           body: EmptyAptWidget(
             imagePath: AssetsManager.noApt,
@@ -35,7 +39,13 @@ class RecentActivityScreen extends StatelessWidget {
             title: const TitlesTextWidget(label: "Recent Activity"),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppFunctions.showErrorOrWarningDialog(
+                      isError: false,
+                      context: context, subtitle: "Are you sure?", fct: (){
+                    recentActProvider.clearRecentAct();
+                  });
+                },
                 icon: const Icon(Icons.delete_forever_rounded),
               ),
             ],
@@ -44,9 +54,12 @@ class RecentActivityScreen extends StatelessWidget {
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             builder: (context, index) {
-              return const DocWidget(docId: "",);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DocWidget(docId: recentActProvider.getViewedDoc.values.toList()[index].docId,),
+              );
             },
-            itemCount: 200,
+            itemCount: recentActProvider.getViewedDoc.length,
             crossAxisCount: 2,
           ),
         );

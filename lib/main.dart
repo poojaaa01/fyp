@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
+import 'package:fyp/providers/recent_activity_provider.dart';
 import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
@@ -38,6 +39,12 @@ class MyApp extends StatelessWidget {
             return AptProvider();
           },
         ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return RecentActivityProvider();
+          },
+        ),
+
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

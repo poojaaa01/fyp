@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/providers/appointment_provider.dart';
+import 'package:fyp/providers/recent_activity_provider.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +17,14 @@ class PopularDoctorsWidget extends StatelessWidget {
 
     final docModel = Provider.of<DoctorType>(context);
     final aptProvider = Provider.of<AptProvider>(context);
+    final recentActProvider = Provider.of<RecentActivityProvider>(context);
 
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () async {
+          recentActProvider.addViewedDoc(docId: docModel.docId);
           await Navigator.pushNamed(context, DocDetailsScreen.routName, arguments: docModel.docId);
         },
         child: SizedBox(

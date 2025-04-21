@@ -7,6 +7,7 @@ import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
+import '../../providers/recent_activity_provider.dart';
 import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
@@ -27,6 +28,7 @@ class _DocWidgetState extends State<DocWidget> {
     final docProvider = Provider.of<DocProvider>(context);
     final getCurrDoctor = docProvider.findByDocId(widget.docId);
     final aptProvider = Provider.of<AptProvider>(context);
+    final recentActProvider = Provider.of<RecentActivityProvider>(context);
     Size size = MediaQuery.of(context).size;
     return getCurrDoctor == null
         ? const SizedBox.shrink()
@@ -34,6 +36,7 @@ class _DocWidgetState extends State<DocWidget> {
       padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
         onTap: () async {
+          recentActProvider.addViewedDoc(docId: getCurrDoctor.docId);
           await Navigator.pushNamed(
             context,
             DocDetailsScreen.routName,
