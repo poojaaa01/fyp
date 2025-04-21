@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/consts/validator.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/register.dart';
@@ -28,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
 
   final _formkey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -54,6 +58,59 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _loginFct() async {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    // if(_pickedImage == null) {
+    //   AppFunctions.showErrorOrWarningDialog(context: context, subtitle: "Choose your image", fct: (){});
+    //   return;
+    // }
+    if (isValid) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+
+        await auth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        final User? user = auth.currentUser;
+        final String uid = user!.uid;
+        //final ref = FirebaseStorage.instance.ref().child("usersImages").child("${_emailController.text.trim()}.jpg");
+        //await ref.putFile(File(_pickedImage!.path));
+        //userImageUrl = await ref.getDownloadURL();
+
+        // await FirebaseFirestore.instance.collection("users").doc(uid).set({
+        //   'userId': uid,
+        //   'userName': _nameController.text,
+        //   'userImage': userImageUrl,
+        //   'userEmail': _emailController.text.toLowerCase(),
+        //   'createdAt': Timestamp.now(),
+        //   'userAppointment': [],
+        // });
+        Fluttertoast.showToast(
+          msg: "Login Successful",
+          textColor: Colors.white,
+        );
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, RootScreen.routeName);
+      }on FirebaseException catch (error) {
+        await AppFunctions.showErrorOrWarningDialog(
+          context: context,
+          subtitle: error.message.toString(),
+          fct: () {},
+        );
+      }catch(error){
+        await AppFunctions.showErrorOrWarningDialog(
+          context: context,
+          subtitle: error.toString(),
+          fct: () {},
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override

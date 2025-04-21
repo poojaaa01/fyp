@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
@@ -11,8 +12,15 @@ import '../providers/theme_provider.dart';
 import '../widgets/title_text.dart';
 import 'auth/login.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -140,15 +148,15 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                 ),
-                icon: const Icon(Icons.login),
-                label: const Text("Log Out"),
+                icon: Icon(user == null ? Icons.login : Icons.logout),
+                label: Text(user == null ? "Login" : "Log Out"),
                 onPressed: () async {
                   Navigator.pushNamed(context, LoginScreen.routeName);
-                  //await AppFunctions.showErrorOrWarningDialog(
-                      //context: context, subtitle: "Are you sure you want to sign out?",
-                      //fct: (){},
-                    //isError: false,
-                  //);
+                  await AppFunctions.showErrorOrWarningDialog(
+                      context: context, subtitle: "Are you sure you want to sign out?",
+                      fct: (){},
+                    isError: false,
+                  );
                 },
               ),
             ),
