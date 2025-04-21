@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "56811145893",
+    "project_id": "moksha-313b0",
+    "storage_bucket": "moksha-313b0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56811145893:android:bc5d4f10e77959493fdb4c",
+        "android_client_info": {
+          "package_name": "com.example.fyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ2MtDXfE39h3GpK9RJ8xfjxYAOlW1o4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
