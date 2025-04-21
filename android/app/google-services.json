@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "452772394918",
-    "project_id": "moksha-cfee1",
-    "storage_bucket": "moksha-cfee1.firebasestorage.app"
+    "project_number": "75367168273",
+    "project_id": "moksha-7291d",
+    "storage_bucket": "moksha-7291d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:452772394918:android:7a32396158f7ba42774167",
+        "mobilesdk_app_id": "1:75367168273:android:9f592f85f64e0106c5f4b0",
         "android_client_info": {
           "package_name": "com.example.fyp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDxXBtHkkwxNXCBWKx3h_Rp0wniQk_zH-c"
+          "current_key": "AIzaSyDi4pVANLVvN99xmiuvN1BCukYwkevVqOY"
         }
       ],
       "services": {

@@ -57,7 +57,7 @@ class DocProvider with ChangeNotifier {
       docCategory: "Counselor",
       docDescription:
       "Dr. Zehangir Khan focuses on relationship counseling, self-esteem building, and coping strategies. He offers a compassionate and non-judgmental approach for young adults and couples.",
-      docImage: "https://cdn.dnaindia.com/sites/default/files/styles/full/public/2016/11/24/522526-shah-rukh-dear-zindagi-tu-hi-hai.jpg",
+      docImage: "https://i.etsystatic.com/19468294/r/il/ec69f9/5951053912/il_570xN.5951053912_1weo.jpg",
       docQuantity: "6",
     ),
     DoctorType(
