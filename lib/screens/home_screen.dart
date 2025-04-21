@@ -64,11 +64,11 @@ class HomeScreen extends StatelessWidget {
                 height: size.height * 0.2,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 10,
+                  itemCount: docProvider.getDoctors.length,
                   itemBuilder: (context, index) {
                     return ChangeNotifierProvider.value(
                       value: docProvider.getDoctors[index],
-                        child: PopularDoctorsWidget());
+                        child: const PopularDoctorsWidget());
                   },
                 ),
               ),
