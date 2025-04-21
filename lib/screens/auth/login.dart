@@ -12,6 +12,7 @@ import 'package:fyp/widgets/title_text.dart';
 
 import '../../root_screen.dart';
 import '../../services/app_functions.dart';
+import '../loading_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/LoginScreen';
@@ -120,174 +121,177 @@ class _LoginScreenState extends State<LoginScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 60.0),
-                AppNameTextWidget(fontSize: 30),
-                const SizedBox(height: 16.0),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TitlesTextWidget(label: "Welcome back!!"),
-                ),
-                const SizedBox(height: 16.0),
-                Form(
-                  key: _formkey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        focusNode: _emailFocusNode,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          hintText: "Email address",
-                          prefixIcon: Icon(IconlyLight.message),
-                        ),
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context).requestFocus(_passwordFocusNode);
-                        },
-                        validator: (value) {
-                          return Validators.emailValidator(value);
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      TextFormField(
-                        obscureText: obscureText,
-                        controller: _passwordController,
-                        focusNode: _passwordFocusNode,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                          ),
-                          hintText: "Password",
-                          prefixIcon: const Icon(IconlyLight.lock),
-                        ),
-                        onFieldSubmitted: (value) async {
-                          await _loginFct();
-                        },
-                        validator: (value) {
-                          return Validators.passwordValidator(value);
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(ForgotPasswordScreen.routeName);
-                          },
-                          child: const SubtitleTextWidget(
-                            label: "Forgot password?",
-                            fontStyle: FontStyle.italic,
-                            textDecoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(12.0),
-                        backgroundColor: Colors.white60,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      icon: const Icon(Icons.login),
-                      label: const Text("Login"),
-                      onPressed: () async {
-                        await _loginFct();
-                      },
-                    ),
+        body: LoadingManager(
+          isLoading: _isLoading,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 60.0),
+                  AppNameTextWidget(fontSize: 30),
+                  const SizedBox(height: 16.0),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TitlesTextWidget(label: "Welcome back!!"),
                   ),
-                      const SizedBox(height: 16.0),
-                      SubtitleTextWidget(
-                        label: "Or connect using".toUpperCase(),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      SizedBox(
-                        height: kBottomNavigationBarHeight + 10,
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              flex: 2,
-                              child: SizedBox(
-                                  height: kBottomNavigationBarHeight + 10,
-                                  child: FittedBox(child: GoogleButton(),
-                                  ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                height: kBottomNavigationBarHeight + 10,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(12.0),
-                                    backgroundColor: Colors.white60,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        12.0,
-                                      ),
-                                    ),
-                                  ),
-                                  child: const Text("Guest?"),
-                                  onPressed: () async {
-                                    Navigator.of(context)
-                                        .pushNamed(RootScreen.routeName);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                  const SizedBox(height: 16.0),
+                  Form(
+                    key: _formkey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          controller: _emailController,
+                          focusNode: _emailFocusNode,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            hintText: "Email address",
+                            prefixIcon: Icon(IconlyLight.message),
+                          ),
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(_passwordFocusNode);
+                          },
+                          validator: (value) {
+                            return Validators.emailValidator(value);
+                          },
                         ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SubtitleTextWidget(label: "New here?"),
-                          TextButton(
-                            onPressed: () {},
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          obscureText: obscureText,
+                          controller: _passwordController,
+                          focusNode: _passwordFocusNode,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscureText = !obscureText;
+                                });
+                              },
+                              icon: Icon(
+                                obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                            ),
+                            hintText: "Password",
+                            prefixIcon: const Icon(IconlyLight.lock),
+                          ),
+                          onFieldSubmitted: (value) async {
+                            await _loginFct();
+                          },
+                          validator: (value) {
+                            return Validators.passwordValidator(value);
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(ForgotPasswordScreen.routeName);
+                            },
                             child: const SubtitleTextWidget(
-                              label: "Sign up now",
+                              label: "Forgot password?",
                               fontStyle: FontStyle.italic,
                               textDecoration: TextDecoration.underline,
                             ),
-                            onLongPress: () {
-                              Navigator.of(context)
-                                  .pushNamed(RegisterScreen.routName);
-                            },
                           ),
-                        ],
-                      )
-                    ],
+                        ),
+                        const SizedBox(height: 16.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(12.0),
+                          backgroundColor: Colors.white60,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        icon: const Icon(Icons.login),
+                        label: const Text("Login"),
+                        onPressed: () async {
+                          await _loginFct();
+                        },
+                      ),
+                    ),
+                        const SizedBox(height: 16.0),
+                        SubtitleTextWidget(
+                          label: "Or connect using".toUpperCase(),
+                        ),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        SizedBox(
+                          height: kBottomNavigationBarHeight + 10,
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                flex: 2,
+                                child: SizedBox(
+                                    height: kBottomNavigationBarHeight + 10,
+                                    child: FittedBox(child: GoogleButton(),
+                                    ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: SizedBox(
+                                  height: kBottomNavigationBarHeight + 10,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(12.0),
+                                      backgroundColor: Colors.white60,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          12.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text("Guest?"),
+                                    onPressed: () async {
+                                      Navigator.of(context)
+                                          .pushNamed(RootScreen.routeName);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SubtitleTextWidget(label: "New here?"),
+                            TextButton(
+                              onPressed: () {},
+                              child: const SubtitleTextWidget(
+                                label: "Sign up now",
+                                fontStyle: FontStyle.italic,
+                                textDecoration: TextDecoration.underline,
+                              ),
+                              onLongPress: () {
+                                Navigator.of(context)
+                                    .pushNamed(RegisterScreen.routName);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
