@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/consts/validator.dart';
 import 'package:fyp/services/app_functions.dart';
 import 'package:fyp/widgets/app_name_text.dart';
@@ -7,6 +9,7 @@ import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../root_screen.dart';
 import '../../widgets/auth/image_picker_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -32,6 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formkey = GlobalKey<FormState>();
   XFile? _pickedImage;
+  bool _isLoading = false;
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -66,6 +71,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _registerFCT() async {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    // if(_pickedImage == null) {
+    //   AppFunctions.showErrorOrWarningDialog(context: context, subtitle: "Choose your image", fct: (){});
+    //   return;
+    // }
+    if (isValid) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+
+        await auth.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        final User? user = auth.currentUser;
+        final String uid = user!.uid;
+        //final ref = FirebaseStorage.instance.ref().child("usersImages").child("${_emailController.text.trim()}.jpg");
+        //await ref.putFile(File(_pickedImage!.path));
+        //userImageUrl = await ref.getDownloadURL();
+
+        // await FirebaseFirestore.instance.collection("users").doc(uid).set({
+        //   'userId': uid,
+        //   'userName': _nameController.text,
+        //   'userImage': userImageUrl,
+        //   'userEmail': _emailController.text.toLowerCase(),
+        //   'createdAt': Timestamp.now(),
+        //   'userAppointment': [],
+        // });
+        Fluttertoast.showToast(
+          msg: "An account has been created",
+          textColor: Colors.white,
+        );
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, RootScreen.routeName);
+      }on FirebaseException catch (error) {
+        await AppFunctions.showErrorOrWarningDialog(
+          context: context,
+          subtitle: error.message.toString(),
+          fct: () {},
+        );
+      }catch(error){
+        await AppFunctions.showErrorOrWarningDialog(
+          context: context,
+          subtitle: error.toString(),
+          fct: () {},
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   Future<void> localImagePicker() async {
