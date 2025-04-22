@@ -22,7 +22,9 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   User? user = FirebaseAuth.instance.currentUser;
 
   UserModel? userModel;
@@ -56,6 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -82,40 +85,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
               userModel == null
                   ? const SizedBox.shrink()
                   : Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 5,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme
+                            .of(context)
+                            .cardColor,
+                        border: Border.all(
+                          color: Colors.deepPurple,
+                          width: 3,
+                        ),
+                        image: DecorationImage(
+                          image: NetworkImage(userModel!.userImage),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                    child: Row(
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).cardColor,
-                            border: Border.all(
-                              color: Colors.deepPurple,
-                              width: 3,
-                            ),
-                            image: DecorationImage(
-                              image: NetworkImage(userModel!.userImage),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TitlesTextWidget(label: userModel!.userName),
-                            SizedBox(height: 6),
-                            SubtitleTextWidget(label: userModel!.userEmail),
-                          ],
-                        ),
+                        TitlesTextWidget(label: userModel!.userName),
+                        SizedBox(height: 6),
+                        SubtitleTextWidget(label: userModel!.userEmail),
                       ],
                     ),
-                  ),
+                  ],
+                ),
+              ),
               SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.all(14.0),
@@ -171,7 +176,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 34,
                       ),
                       title: Text(
-                        themeProvider.getIsDarkTheme ? "Dark Mode" : "Light Mode",
+                        themeProvider.getIsDarkTheme
+                            ? "Dark Mode"
+                            : "Light Mode",
                       ),
                       value: themeProvider.getIsDarkTheme,
                       onChanged: (value) {
