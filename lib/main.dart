@@ -13,8 +13,16 @@ import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();  // Ensure that Flutter binding is initialized.
+
+  try {
+    await Firebase.initializeApp();  // Initialize Firebase
+    runApp(const MyApp());  // Run the app after Firebase is initialized.
+  } catch (e) {
+    print("Error initializing Firebase: $e");  // Print error if Firebase fails to initialize.
+    runApp(const ErrorApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -93,6 +101,22 @@ class MyApp extends StatelessWidget {
           ),
         );
       }
+    );
+  }
+}
+
+class ErrorApp extends StatelessWidget {
+  const ErrorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: SelectableText('Error initializing Firebase!'),
+        ),
+      ),
     );
   }
 }

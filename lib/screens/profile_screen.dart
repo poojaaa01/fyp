@@ -151,10 +151,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: Icon(user == null ? Icons.login : Icons.logout),
                 label: Text(user == null ? "Login" : "Log Out"),
                 onPressed: () async {
-                  Navigator.pushNamed(context, LoginScreen.routeName);
                   await AppFunctions.showErrorOrWarningDialog(
-                      context: context, subtitle: "Are you sure you want to sign out?",
-                      fct: (){},
+                    context: context,
+                    subtitle: "Are you sure you want to sign out?",
+                    fct: () async {
+                      await FirebaseAuth.instance.signOut();
+                      if (!mounted) return;
+                      Navigator.pushReplacementNamed(
+                          context,
+                          LoginScreen.routeName
+                      );
+                    },
                     isError: false,
                   );
                 },
