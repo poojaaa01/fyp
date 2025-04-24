@@ -58,18 +58,28 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              const TitlesTextWidget(label: "Popular Doctors"),
+              Visibility(
+                visible: docProvider.getDoctors.isNotEmpty,
+                child: const TitlesTextWidget(label: "Popular Doctors"),
+              ),
               const SizedBox(height: 15.0),
-              SizedBox(
-                height: size.height * 0.2,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: docProvider.getDoctors.length,
-                  itemBuilder: (context, index) {
-                    return ChangeNotifierProvider.value(
-                      value: docProvider.getDoctors[index],
-                        child: const PopularDoctorsWidget());
-                  },
+              Visibility(
+                visible: docProvider.getDoctors.isNotEmpty,
+                child: SizedBox(
+                  height: size.height * 0.2,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount:
+                        docProvider.getDoctors.length < 10
+                            ? docProvider.getDoctors.length
+                            : 10,
+                    itemBuilder: (context, index) {
+                      return ChangeNotifierProvider.value(
+                        value: docProvider.getDoctors[index],
+                        child: const PopularDoctorsWidget(),
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 15.0),

@@ -13,12 +13,16 @@ import 'package:fyp/screens/inner_screen/recent_activity.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();  // Ensure that Flutter binding is initialized.
 
   try {
-    await Firebase.initializeApp();  // Initialize Firebase
+    await Firebase.initializeApp();
+    await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.debug,
+    );// Initialize Firebase
     runApp(const MyApp());  // Run the app after Firebase is initialized.
   } catch (e) {
     print("Error initializing Firebase: $e");  // Print error if Firebase fails to initialize.

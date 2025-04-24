@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/widgets/products/doc_widget.dart';
@@ -18,6 +16,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController searchTextController;
+  List<DoctorType> doctorListSearch = [];
 
   @override
   void initState() {
@@ -31,83 +30,96 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
-  List<DoctorType> doctorListSearch = [];
   @override
   Widget build(BuildContext context) {
     final docProvider = Provider.of<DocProvider>(context);
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(AssetsManager.logoApp),
-          ),
-          title: const TitlesTextWidget(label: "Search Doctors"),
-        ),
-        body: Padding(
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 15.0),
-              TextField(
-                controller: searchTextController,
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      //setState(() {
-                      FocusScope.of(context).unfocus();
-                      searchTextController.clear();
-                      //});
-                    },
-                    child: const Icon(Icons.clear, color: Colors.blueGrey),
+          child: Image.asset(AssetsManager.logoApp),
+        ),
+        title: const TitlesTextWidget(label: "Search Doctors"),
+      ),
+      body: StreamBuilder<List<DoctorType>>(
+        stream: docProvider.fetchDoctorsStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No doctors available'));
+          }
+
+          final doctors = snapshot.data!;
+
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                // Search Bar
+                TextField(
+                  controller: searchTextController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: "Search by name or specialty...",
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: searchTextController.text.isNotEmpty
+                        ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        searchTextController.clear();
+                        setState(() => doctorListSearch = []);
+                        FocusScope.of(context).unfocus();
+                      },
+                    )
+                        : null,
                   ),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    doctorListSearch = docProvider.searchQuery(
-                        searchText: searchTextController.text
-                    );
-                  });
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    doctorListSearch = docProvider.searchQuery(
-                        searchText: searchTextController.text
-                    );
-                  });
-                },
-              ),
-              const SizedBox(height: 15.0),
-              if(searchTextController.text.isNotEmpty && doctorListSearch.isEmpty)...[
-                const Center(
-                  child: TitlesTextWidget(label: "No doctor found",),
-                ),
-              ],
-              Expanded(
-                child: DynamicHeightGridView(
-                  itemCount: searchTextController.text.isNotEmpty
-                      ? doctorListSearch.length
-                      : docProvider.getDoctors.length,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  builder: (context, index) {
-                    return DocWidget(
-                      docId: searchTextController.text.isNotEmpty
-                          ? doctorListSearch [index].docId
-                          : docProvider.getDoctors[index].docId,
-                    );
+                  onChanged: (value) {
+                    setState(() {
+                      doctorListSearch = docProvider.searchQuery(
+                        searchText: value.trim(),
+                      );
+                    });
                   },
                 ),
-              ),
-            ],
-          ),
-        ),
+                const SizedBox(height: 16),
+
+                // Results Grid
+                Expanded(
+                  child: (searchTextController.text.isNotEmpty &&
+                      doctorListSearch.isEmpty)
+                      ? const Center(child: Text('No doctors found'))
+                      : DynamicHeightGridView(
+                    itemCount: searchTextController.text.isNotEmpty
+                        ? doctorListSearch.length
+                        : doctors.length,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    builder: (context, index) {
+                      final doctor = searchTextController.text.isNotEmpty
+                          ? doctorListSearch[index]
+                          : doctors[index];
+                      return DocWidget(docId: doctor.docId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

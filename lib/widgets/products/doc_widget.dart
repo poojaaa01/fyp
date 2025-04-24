@@ -7,16 +7,16 @@ import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
-import '../../providers/recent_activity_provider.dart';
 import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
   const DocWidget({
-    super.key, required this.docId,
+    super.key,
+    required this.docId,
   });
 
-
   final String docId;
+
   @override
   State<DocWidget> createState() => _DocWidgetState();
 }
@@ -24,95 +24,115 @@ class DocWidget extends StatefulWidget {
 class _DocWidgetState extends State<DocWidget> {
   @override
   Widget build(BuildContext context) {
-    //final doctorTypeProvider = Provider.of<DoctorType>(context);
     final docProvider = Provider.of<DocProvider>(context);
     final getCurrDoctor = docProvider.findByDocId(widget.docId);
     final aptProvider = Provider.of<AptProvider>(context);
-    final recentActProvider = Provider.of<RecentActivityProvider>(context);
-    Size size = MediaQuery.of(context).size;
-    return getCurrDoctor == null
-        ? const SizedBox.shrink()
-        :Padding(
-      padding: const EdgeInsets.all(0.0),
-      child: GestureDetector(
-        onTap: () async {
-          recentActProvider.addViewedDoc(docId: getCurrDoctor.docId);
-          await Navigator.pushNamed(
-            context,
-            DocDetailsScreen.routName,
-            arguments: getCurrDoctor.docId,
-          );
-        },
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: FancyShimmerImage(
-                imageUrl: getCurrDoctor.docImage,
-                height: size.height * 0.22,
-                width: double.infinity,
+    final size = MediaQuery.of(context).size;
+
+    if (getCurrDoctor == null) return const SizedBox.shrink();
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blue[50], // Light grey background
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: GestureDetector(
+          onTap: () async {
+            await Navigator.pushNamed(
+              context,
+              DocDetailsScreen.routName,
+              arguments: getCurrDoctor.docId,
+            );
+          },
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: FancyShimmerImage(
+                  imageUrl: getCurrDoctor.docImage,
+                  height: size.height * 0.22,
+                  width: double.infinity,
+                ),
               ),
-            ),
-            const SizedBox(height: 12.0),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Row(
-                children: [
-                  Flexible(
-                    flex: 5,
-                    child: TitlesTextWidget(
-                      label: getCurrDoctor.docTitle,
-                      fontSize: 18,
-                      maxLines: 2,
-                    ),
-                  ),
-                  const Flexible(flex: 2, child: HeartButtonWidget()),
-                ],
-              ),
-            ),
-            const SizedBox(height: 6.0),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: SubtitleTextWidget(
-                      label: "${getCurrDoctor.docPrice}",
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Flexible(
-                    child: Material(
-                      borderRadius: BorderRadius.circular(12.0),
-                      //color: Colors.lightBlue,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12.0),
-                        onTap: () {
-                          if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
-                            return;
-                          }
-                          aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
-                        },
-                        splashColor: Colors.yellow,
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Icon(
-                            aptProvider.isDocinApt(
-                                docId: getCurrDoctor.docId)
-                                ? Icons.check
-                                : Icons.shopping_bag_outlined),
+              const SizedBox(height: 12.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0), // Increased padding
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Doctor Name and Heart Button
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitlesTextWidget(
+                                label: getCurrDoctor.docTitle,
+                                fontSize: 18,
+                                maxLines: 2,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                getCurrDoctor.docCategory,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        const Flexible(flex: 2, child: HeartButtonWidget()),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 6.0),
+                    // Price and Add Button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: SubtitleTextWidget(
+                            label: "${getCurrDoctor.docPrice}",
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        Flexible(
+                          child: Material(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12.0),
+                              onTap: () {
+                                if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
+                                  return;
+                                }
+                                aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
+                              },
+                              splashColor: Colors.yellow,
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Icon(
+                                    aptProvider.isDocinApt(
+                                        docId: getCurrDoctor.docId)
+                                        ? Icons.check
+                                        : Icons.shopping_bag_outlined),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 12.0),
-          ],
+              const SizedBox(height: 8.0),
+            ],
+          ),
         ),
       ),
     );

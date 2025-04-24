@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fyp/providers/appointment_provider.dart';
+import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/screens/appointment/book_screen.dart';
 import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
@@ -19,6 +22,7 @@ class _RootScreenState extends State<RootScreen> {
   late List<Widget> screens;
   int currentScreen = 0;
   late PageController controller;
+  bool isLoadingDoc = true;
   @override
   void initState() {
     super.initState();
@@ -30,6 +34,26 @@ class _RootScreenState extends State<RootScreen> {
     ];
     controller = PageController(initialPage: currentScreen);
   }
+
+  Future<void> fetchFCT() async{
+    final docProvider = Provider.of<DocProvider>(context, listen: false);
+    try{
+      Future.wait({
+        docProvider.fetchDoctors(),
+      });
+    }catch(error){
+      log(error.toString());
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if(isLoadingDoc){
+      //fetchFCT();
+    }
+    super.didChangeDependencies();
+  }
+
 
   @override
   Widget build(BuildContext context) {
