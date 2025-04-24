@@ -120,7 +120,18 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                         SubtitleTextWidget(label: getCurrDoctor.docCategory)
                       ]),
                   const SizedBox(height: 15),
-                  SubtitleTextWidget(label: getCurrDoctor.docDescription),
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        getCurrDoctor.docDescription,
+                        textAlign: TextAlign.justify, // This makes the text justified
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 1.5, // Line height
+                        ),
+                      ),
+                  )
                 ],
               ),
             ),

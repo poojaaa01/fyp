@@ -21,11 +21,9 @@ void main() async{
   try {
     await Firebase.initializeApp();
     await FirebaseAppCheck.instance.activate(
-        androidProvider: AndroidProvider.debug,
     );// Initialize Firebase
     runApp(const MyApp());  // Run the app after Firebase is initialized.
   } catch (e) {
-    print("Error initializing Firebase: $e");  // Print error if Firebase fails to initialize.
     runApp(const ErrorApp());
   }
 }

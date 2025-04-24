@@ -48,7 +48,7 @@ class DocProvider with ChangeNotifier {
 
   Stream<List<DoctorType>> fetchDoctorsStream (){
     try{
-      return doctorDb.snapshots().map((snapshot) {
+      return doctorDb.orderBy('createdAt', descending: false).snapshots().map((snapshot) {
         doctors.clear();
         // products = []
         for (var element in snapshot.docs) {
