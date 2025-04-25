@@ -7,7 +7,9 @@ import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
 
 class AptBottomSheetWidget extends StatelessWidget {
-  const AptBottomSheetWidget({super.key});
+  const AptBottomSheetWidget({super.key, required this.function});
+
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,9 @@ class AptBottomSheetWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: () {}, child: const Text("Checkout")),
+              ElevatedButton(onPressed: () async{
+                await function();
+              }, child: const Text("Checkout")),
             ],
           ),
         ),
