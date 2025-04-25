@@ -11,10 +11,7 @@ import '../../providers/doc_provider.dart';
 import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
-  const DocWidget({
-    super.key,
-    required this.docId,
-  });
+  const DocWidget({super.key, required this.docId});
 
   final String docId;
 
@@ -108,11 +105,17 @@ class _DocWidgetState extends State<DocWidget> {
                             borderRadius: BorderRadius.circular(12.0),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.0),
-                              onTap: () async{
-                                try{await
-                                  aptProvider.appointmentFirebase(docId: getCurrDoctor.docId, context: context);
+                              onTap: () async {
+                                if (aptProvider.isDocinApt(
+                                  docId: getCurrDoctor.docId,)) {
+                                  return;
                                 }
-                                catch(e){
+                                try {
+                                  await aptProvider.appointmentFirebase(
+                                    docId: getCurrDoctor.docId,
+                                    context: context,
+                                  );
+                                } catch (e) {
                                   await AppFunctions.showErrorOrWarningDialog(
                                     context: context,
                                     subtitle: e.toString(),
@@ -128,10 +131,12 @@ class _DocWidgetState extends State<DocWidget> {
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: Icon(
-                                    aptProvider.isDocinApt(
-                                        docId: getCurrDoctor.docId)
-                                        ? Icons.check
-                                        : Icons.shopping_bag_outlined),
+                                  aptProvider.isDocinApt(
+                                        docId: getCurrDoctor.docId,
+                                      )
+                                      ? Icons.check
+                                      : Icons.shopping_bag_outlined,
+                                ),
                               ),
                             ),
                           ),

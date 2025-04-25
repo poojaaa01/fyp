@@ -95,6 +95,10 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                 ),
                               ),
                               onPressed: () async{
+                                if (aptProvider.isDocinApt(
+                                  docId: getCurrDoctor.docId,)) {
+                                  return;
+                                }
                                 try {await
                                 aptProvider.appointmentFirebase(docId: getCurrDoctor.docId, context: context);
                                 }

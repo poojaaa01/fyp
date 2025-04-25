@@ -61,6 +61,10 @@ class PopularDoctorsWidget extends StatelessWidget {
                           const HeartButtonWidget(),
                           IconButton(
                             onPressed: () async{
+                              if (aptProvider.isDocinApt(
+                                docId: docModel.docId,)) {
+                                return;
+                              }
                               try{await
                               aptProvider.appointmentFirebase(docId: docModel.docId, context: context);
                               }

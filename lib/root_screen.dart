@@ -37,9 +37,13 @@ class _RootScreenState extends State<RootScreen> {
 
   Future<void> fetchFCT() async{
     final docProvider = Provider.of<DocProvider>(context, listen: false);
+    final aptProvider = Provider.of<AptProvider>(context, listen: false);
     try{
       Future.wait({
         docProvider.fetchDoctors(),
+      });
+      Future.wait({
+        aptProvider.fetchAppointment(),
       });
     }catch(error){
       log(error.toString());
@@ -49,7 +53,7 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void didChangeDependencies() {
     if(isLoadingDoc){
-      //fetchFCT();
+      fetchFCT();
     }
     super.didChangeDependencies();
   }

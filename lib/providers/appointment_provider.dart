@@ -40,10 +40,39 @@ class AptProvider with ChangeNotifier {
           {'appointmentId': appointmentId, 'docId': docId},
         ]),
       });
+      await fetchAppointment();
       Fluttertoast.showToast(msg: "Appointment is added");
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> fetchAppointment() async {
+    final User? user = _auth.currentUser;
+    if (user == null) {
+      _aptItems.clear();
+      return;
+    }
+    try {
+      final userDoc = await userDb.doc(user.uid).get();
+      final data = userDoc.data();
+      if (data == null || !data.containsKey('userAppointment')) {
+        return;
+      }
+      final leng = userDoc.get("userAppointment").length;
+      for (int index = 0; index < leng; index++) {
+        _aptItems.putIfAbsent(
+          userDoc.get("userAppointment")[index]['docId'],
+          () => AptModel(
+            aptId: userDoc.get("userAppointment")[index]['appointmentId'],
+            docId: userDoc.get("userAppointment")[index]['docId'],
+          ),
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+    notifyListeners();
   }
 
   //Local
