@@ -27,6 +27,7 @@ class AssetsManager {
   static String theme = "$profileImagesPath/theme.png";
   static String dark = "$profileImagesPath/dark.png";
   static String light = "$profileImagesPath/light.png";
+  static String Onapt = "$profileImagesPath/appointmenton.png";
 
   // App
   static String logoApp = "$appImagesPath/logo.jpg";

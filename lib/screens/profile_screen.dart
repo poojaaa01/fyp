@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fyp/screens/inner_screen/orders/orders_screen.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
 import 'package:fyp/screens/loading_manager.dart';
 import 'package:fyp/services/app_functions.dart';
@@ -131,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                     const TitlesTextWidget(label: "General"),
                     const SizedBox(height: 10),
                     CustomListTile(
-                      text: "Recent Activity",
+                      text: "Recent activity",
                       imagePath: AssetsManager.activity,
                       function: () {
                         Navigator.pushNamed(
@@ -146,6 +147,19 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         text: "Streaks",
                         imagePath: AssetsManager.progress,
                         function: () {},
+                      ),
+                    ),
+                    Visibility(
+                      visible: userModel == null ? false : true,
+                      child: CustomListTile(
+                        text: "Ongoing appointment",
+                        imagePath: AssetsManager.Onapt,
+                        function: () {
+                          Navigator.pushNamed(
+                            context,
+                            OrdersScreenFree.routeName,
+                          );
+                        },
                       ),
                     ),
                     Visibility(
