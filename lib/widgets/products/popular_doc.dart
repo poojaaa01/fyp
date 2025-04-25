@@ -7,6 +7,7 @@ import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:provider/provider.dart';
 
 import '../../screens/inner_screen/doc_details.dart';
+import '../../services/app_functions.dart';
 import '../subtitle_text.dart';
 
 class PopularDoctorsWidget extends StatelessWidget {
@@ -59,11 +60,17 @@ class PopularDoctorsWidget extends StatelessWidget {
                           const SizedBox(height: 5),
                           const HeartButtonWidget(),
                           IconButton(
-                            onPressed: () {
-                              if(aptProvider.isDocinApt(docId: docModel.docId)){
-                                return;
+                            onPressed: () async{
+                              try{await
+                              aptProvider.appointmentFirebase(docId: docModel.docId, context: context);
                               }
-                              aptProvider.addDoctorToAppointment(docId: docModel.docId);
+                              catch(e){
+                                await AppFunctions.showErrorOrWarningDialog(
+                                  context: context,
+                                  subtitle: e.toString(),
+                                  fct: () {},
+                                );
+                              }
                             },
                             icon: Icon(
                                 aptProvider.isDocinApt(

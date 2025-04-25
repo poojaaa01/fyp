@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final docProvider = Provider.of<DocProvider>(context);
+    final docProvider = Provider.of<DocProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(

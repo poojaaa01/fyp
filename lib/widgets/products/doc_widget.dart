@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/doc_type.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
+import 'package:fyp/services/app_functions.dart';
 import 'package:fyp/widgets/products/heart_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
@@ -107,11 +108,21 @@ class _DocWidgetState extends State<DocWidget> {
                             borderRadius: BorderRadius.circular(12.0),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.0),
-                              onTap: () {
-                                if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
-                                  return;
+                              onTap: () async{
+                                try{await
+                                  aptProvider.appointmentFirebase(docId: getCurrDoctor.docId, context: context);
                                 }
-                                aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
+                                catch(e){
+                                  await AppFunctions.showErrorOrWarningDialog(
+                                    context: context,
+                                    subtitle: e.toString(),
+                                    fct: () {},
+                                  );
+                                }
+                                // if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
+                                //   return;
+                                // }
+                                // aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
                               },
                               splashColor: Colors.yellow,
                               child: Padding(

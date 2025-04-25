@@ -5,6 +5,7 @@ import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
+import '../../services/app_functions.dart';
 import '../../widgets/app_name_text.dart';
 import '../../widgets/subtitle_text.dart';
 
@@ -93,11 +94,17 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
                               ),
-                              onPressed: () {
-                                if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
-                                  return;
+                              onPressed: () async{
+                                try {await
+                                aptProvider.appointmentFirebase(docId: getCurrDoctor.docId, context: context);
                                 }
-                                aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
+                                catch(e){
+                                  await AppFunctions.showErrorOrWarningDialog(
+                                    context: context,
+                                    subtitle: e.toString(),
+                                    fct: () {},
+                                  );
+                                }
                               },
                               icon: Icon(aptProvider.isDocinApt(
                                   docId: getCurrDoctor.docId)
