@@ -25,73 +25,80 @@ class BookWidget extends StatelessWidget {
     return getCurrDoctor == null
         ? const SizedBox.shrink()
         : FittedBox(
-      child: IntrinsicWidth(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
-                child: FancyShimmerImage(
-                  imageUrl: getCurrDoctor.docImage,
-                  height: size.height * 0.2,
-                  width: size.height * 0.2,
-                ),
-              ),
-              const SizedBox(width: 10),
-              IntrinsicWidth(
-                child: Column(
-                  children: [
-                    Row(
+          child: IntrinsicWidth(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: FancyShimmerImage(
+                      imageUrl: getCurrDoctor.docImage,
+                      height: size.height * 0.2,
+                      width: size.height * 0.2,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  IntrinsicWidth(
+                    child: Column(
                       children: [
-                        SizedBox(
-                          width: size.width * 0.6,
-                          child: TitlesTextWidget(
-                            label: getCurrDoctor.docTitle,
-                            maxLines: 2,
-                          ),
-                        ),
-                        Column(
+                        Row(
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                aptProvider.removeOneItem(docId: getCurrDoctor.docId);
-                              },
-                              icon: const Icon(Icons.clear, color: Colors.red),
+                            SizedBox(
+                              width: size.width * 0.6,
+                              child: TitlesTextWidget(
+                                label: getCurrDoctor.docTitle,
+                                maxLines: 2,
+                              ),
                             ),
-                            const HeartButtonWidget(),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    aptProvider.removeAptItemFromFirestore(
+                                      appointmentId: cartModel.aptId,
+                                      docId: getCurrDoctor.docId,
+                                    );
+                                    // aptProvider.removeOneItem(docId: getCurrDoctor.docId);
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                const HeartButtonWidget(),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SubtitleTextWidget(
+                              label: getCurrDoctor.docPrice,
+                              color: Colors.blue,
+                            ),
+                            const Spacer(),
+                            // OutlinedButton.icon(
+                            //   onPressed: () {},
+                            //   icon: const Icon(IconlyLight.arrowDown2),
+                            //   label: const Text("Qty: 1"),
+                            //   style: OutlinedButton.styleFrom(
+                            //     //side: BorderSide(width: 2),
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(30.0),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                         SubtitleTextWidget(
-                          label: getCurrDoctor.docPrice,
-                          color: Colors.blue,
-                        ),
-                        const Spacer(),
-                        // OutlinedButton.icon(
-                        //   onPressed: () {},
-                        //   icon: const Icon(IconlyLight.arrowDown2),
-                        //   label: const Text("Qty: 1"),
-                        //   style: OutlinedButton.styleFrom(
-                        //     //side: BorderSide(width: 2),
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(30.0),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }

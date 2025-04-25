@@ -75,8 +75,41 @@ class AptProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  //Local
+  Future<void> removeAptItemFromFirestore({
+    required String appointmentId,
+    required String docId,
+  }) async {
+    final User? user = _auth.currentUser;
+    try {
+      await userDb.doc(user!.uid).update({
+        'userAppointment': FieldValue.arrayRemove([
+          {'appointmentId': appointmentId, 'docId': docId},
+        ]),
+      });
+      //await fetchAppointment();
+      _aptItems.remove(docId);
+      Fluttertoast.showToast(msg: "One appointment has been removed");
+    } catch (e) {
+      rethrow;
+    }
+  }
 
+  Future<void> clearAptFromFirebase()async{
+    final User? user = _auth.currentUser;
+    try {
+      await userDb.doc(user!.uid).update({
+        'userAppointment': [],
+      });
+      //await fetchAppointment();
+      _aptItems.clear();
+      Fluttertoast.showToast(msg: "Your appointment has been cleared");
+    } catch (e) {
+      rethrow;
+    }
+
+  }
+
+  //Local
   void addDoctorToAppointment({required String docId}) {
     _aptItems.putIfAbsent(
       docId,

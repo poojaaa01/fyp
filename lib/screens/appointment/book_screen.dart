@@ -40,8 +40,9 @@ class BookScreen extends StatelessWidget {
                 onPressed: () {
                   AppFunctions.showErrorOrWarningDialog(
                     isError: false,
-                      context: context, subtitle: "Are you sure?", fct: (){
-                    aptProvider.clearLocalAppointment();
+                      context: context, subtitle: "Are you sure?", fct: () async{
+                      aptProvider.clearAptFromFirebase();
+                    //aptProvider.clearLocalAppointment();
                   });
                 },
                 icon: const Icon(Icons.delete_forever_rounded),
