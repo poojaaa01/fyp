@@ -8,8 +8,8 @@ import 'package:fyp/widgets/products/start_rounded_widget.dart';
 import 'package:fyp/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
-
-import '../providers/doc_provider.dart';
+import 'package:fyp/providers/doc_provider.dart';
+import 'package:fyp/screens/mood/mood_tracker_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final docProvider = Provider.of<DocProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               SizedBox(
                 height: size.height * 0.25,
                 child: ClipRRect(
@@ -48,7 +49,6 @@ class HomeScreen extends StatelessWidget {
                     },
                     itemCount: AppConstants.bannersImages.length,
                     pagination: SwiperPagination(
-                      //alignment: Alignment.center
                       builder: DotSwiperPaginationBuilder(
                         activeColor: Colors.amber,
                         color: Colors.white,
@@ -69,10 +69,9 @@ class HomeScreen extends StatelessWidget {
                   height: size.height * 0.2,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount:
-                        docProvider.getDoctors.length < 10
-                            ? docProvider.getDoctors.length
-                            : 10,
+                    itemCount: docProvider.getDoctors.length < 10
+                        ? docProvider.getDoctors.length
+                        : 10,
                     itemBuilder: (context, index) {
                       return ChangeNotifierProvider.value(
                         value: docProvider.getDoctors[index],
@@ -90,9 +89,24 @@ class HomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 4,
                 children: List.generate(AppConstants.startList.length, (index) {
-                  return StartRoundedWidget(
-                    image: AppConstants.startList[index].image,
-                    name: AppConstants.startList[index].name,
+                  final feature = AppConstants.startList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      if (feature.name == "Mood Tracker") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoodTrackerScreen(),
+                          ),
+                        );
+                      } else {
+                        debugPrint("${feature.name} tapped!");
+                      }
+                    },
+                    child: StartRoundedWidget(
+                      image: feature.image,
+                      name: feature.name,
+                    ),
                   );
                 }),
               ),

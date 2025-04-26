@@ -10,6 +10,7 @@ import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/profile_screen.dart';
 import 'package:fyp/screens/search_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 class RootScreen extends StatefulWidget {
   static const routeName = '/RootScreen';
