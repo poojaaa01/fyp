@@ -5,6 +5,7 @@ import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/providers/focus_session_provider.dart';
 import 'package:fyp/providers/mood_provider.dart';
 import 'package:fyp/providers/order_provider.dart';
+import 'package:fyp/providers/post_provider.dart';
 import 'package:fyp/providers/recent_activity_provider.dart';
 import 'package:fyp/providers/user_provider.dart';
 import 'package:fyp/root_screen.dart';
@@ -95,6 +96,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (_) {
                 return FocusSessionProvider();
+              },
+            ),
+            ChangeNotifierProvider(
+              create: (_) {
+                return PostProvider();
               },
             ),
           ],

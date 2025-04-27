@@ -215,21 +215,30 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   icon: Icon(user == null ? Icons.login : Icons.logout),
                   label: Text(user == null ? "Login" : "Log Out"),
                   onPressed: () async {
-                    await AppFunctions.showErrorOrWarningDialog(
-                      context: context,
-                      subtitle: "Are you sure you want to sign out?",
-                      fct: () async {
-                        await FirebaseAuth.instance.signOut();
-                        if (!mounted) return;
-                        Navigator.pushReplacementNamed(
-                          context,
-                          LoginScreen.routeName,
-                        );
-                      },
-                      isError: false,
-                    );
+                    if (user == null) {
+                      // Guest mode → go to Login screen directly
+                      Navigator.pushReplacementNamed(
+                        context,
+                        LoginScreen.routeName,
+                      );
+                    } else {
+                      // Logged in user → show sign out confirmation
+                      await AppFunctions.showErrorOrWarningDialog(
+                        context: context,
+                        subtitle: "Are you sure you want to sign out?",
+                        fct: () async {
+                          await FirebaseAuth.instance.signOut();
+                          if (!mounted) return;
+                          Navigator.pushReplacementNamed(
+                            context,
+                            LoginScreen.routeName,
+                          );
+                        },
+                        isError: false,
+                      );
+                    }
                   },
-                ),
+                )
               ),
             ],
           ),
