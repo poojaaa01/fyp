@@ -1,29 +1,32 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-import '../models/focus_session_model.dart';
+
+import 'recent_activity_provider.dart';
+import 'package:provider/provider.dart';
+
+class FocusSession {
+  final DateTime startTime;
+
+  FocusSession() : startTime = DateTime.now();
+}
 
 class FocusSessionProvider with ChangeNotifier {
   FocusSession? _currentSession;
   Timer? _timer;
   Duration _elapsed = Duration.zero;
+  bool _isRunning = false;
 
-  Duration get elapsed => _elapsed;
-  bool get isRunning => _timer != null && _timer!.isActive;
   FocusSession? get currentSession => _currentSession;
+  Duration get elapsed => _elapsed;
+  bool get isRunning => _isRunning;
 
   void startSession() {
-    final newSession = FocusSession(
-      id: const Uuid().v4(),
-      startTime: DateTime.now(),
-    );
-
-    _currentSession = newSession;
+    _currentSession = FocusSession();
     _elapsed = Duration.zero;
+    _isRunning = true;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _elapsed += const Duration(seconds: 1);
+      _elapsed = DateTime.now().difference(_currentSession!.startTime);
       notifyListeners();
     });
 
@@ -32,44 +35,35 @@ class FocusSessionProvider with ChangeNotifier {
 
   void pauseSession() {
     _timer?.cancel();
+    _isRunning = false;
     notifyListeners();
   }
 
   void resumeSession() {
+    if (_currentSession == null) return;
+
+    _isRunning = true;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _elapsed += const Duration(seconds: 1);
+      _elapsed = DateTime.now().difference(_currentSession!.startTime);
       notifyListeners();
     });
+
     notifyListeners();
   }
 
-  Future<void> stopSession({bool isCompleted = true}) async {
+  void stopSession(BuildContext context) {
     _timer?.cancel();
 
     if (_currentSession != null) {
-      final updatedSession = FocusSession(
-        id: _currentSession!.id,
-        startTime: _currentSession!.startTime,
-        endTime: DateTime.now(),
-        duration: _elapsed,
-        isCompleted: isCompleted,
-      );
+      final duration = DateTime.now().difference(_currentSession!.startTime);
 
-      await FirebaseFirestore.instance
-          .collection('focus_sessions')
-          .doc(updatedSession.id)
-          .set(updatedSession.toMap());
-
-      _currentSession = null;
-      _elapsed = Duration.zero;
-      notifyListeners();
+      Provider.of<RecentActivityProvider>(context, listen: false)
+          .addFocusActivity(duration: "${duration.inMinutes} minutes");
     }
-  }
 
-  void resetSession() {
-    _timer?.cancel();
     _currentSession = null;
     _elapsed = Duration.zero;
+    _isRunning = false;
     notifyListeners();
   }
 }

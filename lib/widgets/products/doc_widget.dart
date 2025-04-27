@@ -8,6 +8,7 @@ import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:provider/provider.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/doc_provider.dart';
+import '../../providers/recent_activity_provider.dart';
 import '../title_text.dart';
 
 class DocWidget extends StatefulWidget {
@@ -25,13 +26,15 @@ class _DocWidgetState extends State<DocWidget> {
     final docProvider = Provider.of<DocProvider>(context);
     final getCurrDoctor = docProvider.findByDocId(widget.docId);
     final aptProvider = Provider.of<AptProvider>(context);
+    final recentActivityProvider =
+    Provider.of<RecentActivityProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
 
     if (getCurrDoctor == null) return const SizedBox.shrink();
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue[50], // Light grey background
+        color: Colors.blue[50],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -56,11 +59,10 @@ class _DocWidgetState extends State<DocWidget> {
               ),
               const SizedBox(height: 12.0),
               Padding(
-                padding: const EdgeInsets.all(8.0), // Increased padding
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Doctor Name and Heart Button
                     Row(
                       children: [
                         Flexible(
@@ -88,7 +90,6 @@ class _DocWidgetState extends State<DocWidget> {
                       ],
                     ),
                     const SizedBox(height: 6.0),
-                    // Price and Add Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -106,14 +107,19 @@ class _DocWidgetState extends State<DocWidget> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.0),
                               onTap: () async {
-                                if (aptProvider.isDocinApt(
-                                  docId: getCurrDoctor.docId,)) {
+                                if (aptProvider.isDocinApt(docId: getCurrDoctor.docId)) {
                                   return;
                                 }
                                 try {
                                   await aptProvider.appointmentFirebase(
                                     docId: getCurrDoctor.docId,
                                     context: context,
+                                  );
+
+                                  Provider.of<RecentActivityProvider>(context, listen: false)
+                                      .addDoctorActivity(
+                                    docId: getCurrDoctor.docId,
+                                    message: 'Booked appointment with ${getCurrDoctor.docTitle}',
                                   );
                                 } catch (e) {
                                   await AppFunctions.showErrorOrWarningDialog(
@@ -122,18 +128,13 @@ class _DocWidgetState extends State<DocWidget> {
                                     fct: () {},
                                   );
                                 }
-                                // if(aptProvider.isDocinApt(docId: getCurrDoctor.docId)){
-                                //   return;
-                                // }
-                                // aptProvider.addDoctorToAppointment(docId: getCurrDoctor.docId);
                               },
                               splashColor: Colors.yellow,
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: Icon(
                                   aptProvider.isDocinApt(
-                                        docId: getCurrDoctor.docId,
-                                      )
+                                      docId: getCurrDoctor.docId)
                                       ? Icons.check
                                       : Icons.shopping_bag_outlined,
                                 ),

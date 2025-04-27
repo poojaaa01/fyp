@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/focus_session_provider.dart';
+import '../../providers/recent_activity_provider.dart';
 import 'dart:math';
 
 import '../../services/assets_manager.dart';
@@ -120,8 +121,12 @@ class FocusModeScreen extends StatelessWidget {
                     ),
                   ElevatedButton(
                     onPressed: () {
-                      sessionProvider.stopSession();
+                      final duration = sessionProvider.elapsed;
+                      sessionProvider.stopSession(context);
                       showMotivationDialog(context);
+
+                      Provider.of<RecentActivityProvider>(context, listen: false)
+                          .addFocusActivity(duration: "${duration.inMinutes} minutes");
                     },
                     child: const Text('Stop'),
                   ),

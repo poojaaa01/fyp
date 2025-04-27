@@ -1,7 +1,7 @@
 class FocusSession {
   final String id;
   final DateTime startTime;
-  final DateTime? endTime;
+  DateTime? endTime;
   final Duration? duration;
   final bool isCompleted;
 

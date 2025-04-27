@@ -15,18 +15,26 @@ class PopularDoctorsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final docModel = Provider.of<DoctorType>(context);
     final aptProvider = Provider.of<AptProvider>(context);
-    final recentActProvider = Provider.of<RecentActivityProvider>(context);
+    final recentActProvider = Provider.of<RecentActivityProvider>(context, listen: false);
 
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () async {
-          recentActProvider.addViewedDoc(docId: docModel.docId);
-          await Navigator.pushNamed(context, DocDetailsScreen.routName, arguments: docModel.docId);
+          // Log activity properly with message
+          recentActProvider.addDoctorActivity(
+            docId: docModel.docId,
+            message: 'Viewed ${docModel.docTitle}\'s details',
+          );
+
+          await Navigator.pushNamed(
+            context,
+            DocDetailsScreen.routName,
+            arguments: docModel.docId,
+          );
         },
         child: SizedBox(
           width: size.width * 0.45,
@@ -60,15 +68,23 @@ class PopularDoctorsWidget extends StatelessWidget {
                           const SizedBox(height: 5),
                           const HeartButtonWidget(),
                           IconButton(
-                            onPressed: () async{
-                              if (aptProvider.isDocinApt(
-                                docId: docModel.docId,)) {
+                            onPressed: () async {
+                              if (aptProvider.isDocinApt(docId: docModel.docId)) {
                                 return;
                               }
-                              try{await
-                              aptProvider.appointmentFirebase(docId: docModel.docId, context: context);
-                              }
-                              catch(e){
+                              try {
+                                await aptProvider.appointmentFirebase(
+                                  docId: docModel.docId,
+                                  context: context,
+                                );
+
+                                // Log appointment activity here too
+                                recentActProvider.addDoctorActivity(
+                                  docId: docModel.docId,
+                                  message: 'Booked appointment with ${docModel.docTitle}',
+                                );
+
+                              } catch (e) {
                                 await AppFunctions.showErrorOrWarningDialog(
                                   context: context,
                                   subtitle: e.toString(),
@@ -77,16 +93,16 @@ class PopularDoctorsWidget extends StatelessWidget {
                               }
                             },
                             icon: Icon(
-                                aptProvider.isDocinApt(
-                                    docId: docModel.docId)
-                                    ? Icons.check
-                                    : Icons.shopping_bag_outlined),
+                              aptProvider.isDocinApt(docId: docModel.docId)
+                                  ? Icons.check
+                                  : Icons.shopping_bag_outlined,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(width: 5),
-                     FittedBox(
+                    FittedBox(
                       child: SubtitleTextWidget(
                         label: docModel.docPrice,
                         fontWeight: FontWeight.w600,
