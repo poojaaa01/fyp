@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:fyp/root_screen.dart';
 import 'package:provider/provider.dart';
 import '../../providers/mood_provider.dart';
+import 'mood_tracker_screen.dart';
 
 class MoodLogScreen extends StatefulWidget {
   const MoodLogScreen({Key? key}) : super(key: key);
@@ -11,9 +14,51 @@ class MoodLogScreen extends StatefulWidget {
 
 class _MoodLogScreenState extends State<MoodLogScreen> {
   String? selectedMood;
+  String? selectedQuote;
   final TextEditingController _noteController = TextEditingController();
+  final Random _random = Random();
 
   final List<String> moods = ['😊', '😐', '😢', '😡', '😴'];
+
+  final Map<String, List<String>> moodQuotes = {
+    '😊': [
+      'Happiness is a choice, not a result.',
+      'Smile — it suits you.',
+      'Good vibes only today!',
+    ],
+    '😐': [
+      'Stay calm, everything will fall into place.',
+      'Not every day needs to be exciting.',
+      'Neutral is okay too — embrace it.',
+    ],
+    '😢': [
+      'Tough times never last, but tough people do.',
+      'It’s okay to feel down — brighter days are ahead.',
+      'Crying is a sign of strength, not weakness.',
+    ],
+    '😡': [
+      'Breathe. It’s just a bad moment, not a bad life.',
+      'Anger doesn’t solve problems, calm does.',
+      'Step back, refocus, rise again.',
+    ],
+    '😴': [
+      'Rest is productive too — take your time.',
+      'Sleep is the best meditation.',
+      'Recharge. You’ll shine tomorrow.',
+    ],
+  };
+
+  void _selectMood(String mood) {
+    setState(() {
+      selectedMood = mood;
+      final quotes = moodQuotes[mood];
+      if (quotes != null && quotes.isNotEmpty) {
+        selectedQuote = quotes[_random.nextInt(quotes.length)];
+      } else {
+        selectedQuote = null;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +72,8 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            //color: Colors.white,
           ),
         ),
-       // iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -49,7 +92,6 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
-                  //color: Colors.white,
                 ),
               ),
               const SizedBox(height: 24),
@@ -59,11 +101,7 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
                   runSpacing: 16,
                   children: moods.map((mood) {
                     return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedMood = mood;
-                        });
-                      },
+                      onTap: () => _selectMood(mood),
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -81,6 +119,24 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
                   }).toList(),
                 ),
               ),
+              const SizedBox(height: 24),
+
+              // Display Random Quote
+              if (selectedQuote != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    selectedQuote!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -121,7 +177,7 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
                       );
 
                       if (!mounted) return;
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, RootScreen.routeName);
                     },
                     child: const Text(
                       "Save Mood",

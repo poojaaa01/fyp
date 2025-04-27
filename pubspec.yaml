@@ -53,6 +53,7 @@ dependencies:
   firebase_storage: ^12.4.5
   google_sign_in: ^6.3.0
   firebase_app_check: ^0.3.2+5
+  intl: ^0.20.2
 
 
 

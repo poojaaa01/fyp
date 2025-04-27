@@ -5,12 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/consts/validator.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/register.dart';
+import 'package:fyp/screens/mood/mood_log_screen.dart'; // <-- import MoodLogScreen here
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/auth/google_btn.dart';
 import 'package:fyp/widgets/subtitle_text.dart';
 import 'package:fyp/widgets/title_text.dart';
 
-import '../../root_screen.dart';
 import '../../services/app_functions.dart';
 import '../loading_manager.dart';
 
@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    // Focus Nodes
     _emailFocusNode = FocusNode();
     _passwordFocusNode = FocusNode();
     super.initState();
@@ -49,7 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) {
       _emailController.dispose();
       _passwordController.dispose();
-      // Focus Nodes
       _emailFocusNode.dispose();
       _passwordFocusNode.dispose();
     }
@@ -60,10 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
 
-    // if(_pickedImage == null) {
-    //   AppFunctions.showErrorOrWarningDialog(context: context, subtitle: "Choose your image", fct: (){});
-    //   return;
-    // }
     if (isValid) {
       try {
         setState(() {
@@ -74,33 +68,27 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-        final User? user = auth.currentUser;
-        final String uid = user!.uid;
-        //final ref = FirebaseStorage.instance.ref().child("usersImages").child("${_emailController.text.trim()}.jpg");
-        //await ref.putFile(File(_pickedImage!.path));
-        //userImageUrl = await ref.getDownloadURL();
 
-        // await FirebaseFirestore.instance.collection("users").doc(uid).set({
-        //   'userId': uid,
-        //   'userName': _nameController.text,
-        //   'userImage': userImageUrl,
-        //   'userEmail': _emailController.text.toLowerCase(),
-        //   'createdAt': Timestamp.now(),
-        //   'userAppointment': [],
-        // });
         Fluttertoast.showToast(
           msg: "Login Successful",
           textColor: Colors.white,
         );
+
         if (!mounted) return;
-        Navigator.pushReplacementNamed(context, RootScreen.routeName);
-      }on FirebaseException catch (error) {
+
+        // 👇 Redirect to MoodLogScreen after login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MoodLogScreen()),
+        );
+
+      } on FirebaseException catch (error) {
         await AppFunctions.showErrorOrWarningDialog(
           context: context,
           subtitle: error.message.toString(),
           fct: () {},
         );
-      }catch(error){
+      } catch (error) {
         await AppFunctions.showErrorOrWarningDialog(
           context: context,
           subtitle: error.toString(),
@@ -203,30 +191,28 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(12.0),
-                          backgroundColor: Colors.white60,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(12.0),
+                              backgroundColor: Colors.white60,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            icon: const Icon(Icons.login),
+                            label: const Text("Login"),
+                            onPressed: () async {
+                              await _loginFct();
+                            },
                           ),
                         ),
-                        icon: const Icon(Icons.login),
-                        label: const Text("Login"),
-                        onPressed: () async {
-                          await _loginFct();
-                        },
-                      ),
-                    ),
                         const SizedBox(height: 16.0),
                         SubtitleTextWidget(
                           label: "Or connect using".toUpperCase(),
                         ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
+                        const SizedBox(height: 16.0),
                         SizedBox(
                           height: kBottomNavigationBarHeight + 10,
                           child: Row(
@@ -234,14 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               const Expanded(
                                 flex: 2,
                                 child: SizedBox(
-                                    height: kBottomNavigationBarHeight + 10,
-                                    child: FittedBox(child: GoogleButton(),
-                                    ),
+                                  height: kBottomNavigationBarHeight + 10,
+                                  child: FittedBox(
+                                    child: GoogleButton(),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
                               Expanded(
                                 child: SizedBox(
                                   height: kBottomNavigationBarHeight + 10,
@@ -250,15 +235,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       padding: const EdgeInsets.all(12.0),
                                       backgroundColor: Colors.white60,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.0,
-                                        ),
+                                        borderRadius: BorderRadius.circular(12.0),
                                       ),
                                     ),
                                     child: const Text("Guest?"),
                                     onPressed: () async {
                                       Navigator.of(context)
-                                          .pushNamed(RootScreen.routeName);
+                                          .pushNamed('/RootScreen');
                                     },
                                   ),
                                 ),
@@ -266,9 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
+                        const SizedBox(height: 16.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -286,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),

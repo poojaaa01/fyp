@@ -10,9 +10,11 @@ import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
 import 'package:fyp/screens/auth/register.dart';
+import 'package:fyp/screens/home_screen.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/screens/inner_screen/orders/orders_screen.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
+import 'package:fyp/screens/mood/mood_tracker_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
@@ -112,6 +114,7 @@ class MyApp extends StatelessWidget {
                   ForgotPasswordScreen.routeName:
                       (context) => const ForgotPasswordScreen(),
                   OrdersScreenFree.routeName: (context) => const OrdersScreenFree(),
+                  MoodTrackerScreen.routeName: (context) => const MoodTrackerScreen(),
                 },
               );
             },

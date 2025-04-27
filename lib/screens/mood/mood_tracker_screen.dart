@@ -68,10 +68,17 @@ class _FloatingEmojiState extends State<FloatingEmoji>
 }
 
 // Mood Tracker Screen
-class MoodTrackerScreen extends StatelessWidget {
-  MoodTrackerScreen({Key? key}) : super(key: key);
+class MoodTrackerScreen extends StatefulWidget {
+  static const routeName = '/moodTracker';
+  const MoodTrackerScreen({super.key});
 
+  @override
+  State<MoodTrackerScreen> createState() => _MoodTrackerScreenState();
+}
+
+class _MoodTrackerScreenState extends State<MoodTrackerScreen> {
   final List<String> emojis = ['😊', '😐', '😢', '😡', '😴'];
+
   final Random random = Random();
 
   @override

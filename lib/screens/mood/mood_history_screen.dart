@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/mood_provider.dart';
 import '../../models/mood_model.dart';
+import 'package:intl/intl.dart';
 
 class MoodHistoryScreen extends StatefulWidget {
   const MoodHistoryScreen({Key? key}) : super(key: key);
@@ -33,10 +34,8 @@ class _MoodHistoryScreenState extends State<MoodHistoryScreen> {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            //color: Colors.white,
           ),
         ),
-        // iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: () async => await moodProvider.fetchMoods(),
@@ -46,11 +45,23 @@ class _MoodHistoryScreenState extends State<MoodHistoryScreen> {
           itemCount: moodProvider.moods.length,
           itemBuilder: (ctx, index) {
             MoodModel mood = moodProvider.moods[index];
+
+            // Format to dd/MM/yyyy HH:mm:ss
+            String formattedDateTime = DateFormat('dd/MM/yyyy HH:mm:ss')
+                .format(mood.timestamp);
+
             return ListTile(
-              leading: Text(mood.mood, style: const TextStyle(fontSize: 28)),
-              title: Text(mood.note?.isNotEmpty == true ? mood.note! : "No note"),
+              leading: Text(
+                mood.mood,
+                style: const TextStyle(fontSize: 28),
+              ),
+              title: Text(
+                mood.note?.isNotEmpty == true
+                    ? mood.note!
+                    : "No note",
+              ),
               subtitle: Text(
-                mood.timestamp.toLocal().toString(),
+                formattedDateTime,
                 style: const TextStyle(fontSize: 12),
               ),
             );
