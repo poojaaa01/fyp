@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/screens/mood/mood_tracker_screen.dart';
+import 'package:fyp/screens/focus/focus_mode_screen.dart'; // 👈 add this import for Focus Mode
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -96,7 +97,14 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MoodTrackerScreen(),
+                            builder: (context) => const MoodTrackerScreen(),
+                          ),
+                        );
+                      } else if (feature.name == "Focus Mode") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FocusModeScreen(),
                           ),
                         );
                       } else {
