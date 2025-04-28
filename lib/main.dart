@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/providers/focus_session_provider.dart';
+import 'package:fyp/providers/meditation_provider.dart';
 import 'package:fyp/providers/mood_provider.dart';
 import 'package:fyp/providers/order_provider.dart';
 import 'package:fyp/providers/post_provider.dart';
@@ -101,6 +102,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (_) {
                 return PostProvider();
+              },
+            ),
+            ChangeNotifierProvider(
+              create: (_) {
+                return MeditationProvider();
               },
             ),
           ],

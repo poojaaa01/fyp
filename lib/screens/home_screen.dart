@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/consts/app_constants.dart';
 import 'package:fyp/screens/Community/community_screen.dart';
+import 'package:fyp/screens/calm/calm_screen.dart';
 import 'package:fyp/services/assets_manager.dart';
 import 'package:fyp/widgets/app_name_text.dart';
 import 'package:fyp/widgets/products/popular_doc.dart';
@@ -141,7 +142,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) => const CommunityScreen(),
                           ),
                         );
-                      } else {
+                      }
+                      else if (feature.name == "Calm") {
+                        if (userProvider.userModel == null) {
+                          _showLoginRequiredDialog(context);
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CalmMainScreen(),
+                            ),
+                          );
+                        }
+                      }
+                      else {
                         debugPrint("${feature.name} tapped!");
                       }
                     },
