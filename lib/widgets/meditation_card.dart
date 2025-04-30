@@ -5,8 +5,14 @@ import '../services/assets_manager.dart';
 
 class MeditationCard extends StatelessWidget {
   final MeditationTrack track;
+  final int selectedMinutes;
+  final int selectedSeconds;
 
-  const MeditationCard({required this.track});
+  const MeditationCard({
+    required this.track,
+    required this.selectedMinutes,
+    required this.selectedSeconds,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,11 @@ class MeditationCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MeditationPlayerScreen(track: track),
+              builder: (context) => MeditationPlayerScreen(
+                track: track,
+                selectedMinutes: selectedMinutes,
+                selectedSeconds: selectedSeconds,
+              ),
             ),
           );
         },
