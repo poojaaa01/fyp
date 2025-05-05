@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/assets_manager.dart';
 import '../../models/meditation_track.dart';
 
@@ -49,6 +51,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
       if (_remainingTime.inSeconds <= 0) {
         timer.cancel();
         _player.stop();
+        _logMeditationSession(); // Log when time runs out
         setState(() {
           isPlaying = false;
         });
@@ -71,6 +74,33 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
       return "${_remainingTime.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_remainingTime.inSeconds.remainder(60).toString().padLeft(2, '0')}";
     }
   }
+
+  Future<void> _logMeditationSession() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final int totalSessionDuration =
+        (widget.selectedMinutes * 60) + widget.selectedSeconds;
+    final int elapsedSessionDuration =
+        totalSessionDuration - _remainingTime.inSeconds;
+
+    await FirebaseFirestore.instance.collection('meditation_history').add({
+      'trackName': widget.track.title,
+      'sessionDurationSeconds': elapsedSessionDuration,
+      'sessionDurationFormatted': _formatDuration(Duration(seconds: elapsedSessionDuration)),
+      'startTime': DateTime.now(),
+      'userId': user.uid,
+      'timestamp': DateTime.now(),
+    });
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
 
   @override
   void dispose() {
@@ -145,6 +175,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
                       if (isPlaying) {
                         _player.play();
                         _startTimer();
+                        _logMeditationSession(); // log at start too if you want
                       } else {
                         _player.pause();
                         _pauseTimer();
