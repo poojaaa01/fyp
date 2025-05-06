@@ -92,7 +92,19 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Community"),
+        title: Row(
+          children: [
+            // Image.asset(
+            //   AssetsManager.logoApp,
+            //   height: 32,
+            // ),
+            const Text(
+              'Community',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: true,
       ),
       body: Column(
         children: [

@@ -15,6 +15,7 @@ import '../providers/theme_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/title_text.dart';
 import 'auth/login.dart';
+import 'inner_screen/analysis_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -175,7 +176,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                       child: CustomListTile(
                         text: "Analysis",
                         imagePath: AssetsManager.analysis,
-                        function: () {},
+                        function: () {
+                          Navigator.pushNamed(
+                            context,
+                            AnalysisScreen.routeName,
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 6),

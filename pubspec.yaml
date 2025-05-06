@@ -63,6 +63,9 @@ dependencies:
   intl: ^0.20.2
 
 
+  #DataAnalysis
+  fl_chart: ^0.71.0
+
 
 
 

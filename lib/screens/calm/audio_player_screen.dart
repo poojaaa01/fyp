@@ -84,15 +84,24 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
     final int elapsedSessionDuration =
         totalSessionDuration - _remainingTime.inSeconds;
 
-    await FirebaseFirestore.instance.collection('meditation_history').add({
-      'trackName': widget.track.title,
-      'sessionDurationSeconds': elapsedSessionDuration,
-      'sessionDurationFormatted': _formatDuration(Duration(seconds: elapsedSessionDuration)),
-      'startTime': DateTime.now(),
-      'userId': user.uid,
-      'timestamp': DateTime.now(),
-    });
+    // Calculate start and end time
+    DateTime startTime = DateTime.now();
+    DateTime endTime = startTime.add(Duration(seconds: elapsedSessionDuration));
+
+    // Log only if the session duration is positive
+    if (elapsedSessionDuration > 0) {
+      await FirebaseFirestore.instance.collection('meditation_history').add({
+        'trackName': widget.track.title,
+        'sessionDurationSeconds': elapsedSessionDuration,
+        'sessionDurationFormatted': _formatDuration(Duration(seconds: elapsedSessionDuration)),
+        'startTime': startTime,
+        'endTime': endTime,
+        'userId': user.uid,
+        'timestamp': DateTime.now(),
+      });
+    }
   }
+
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');

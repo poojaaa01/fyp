@@ -29,14 +29,18 @@ class MoodProvider with ChangeNotifier {
     );
 
     try {
-      await _firestore.collection('users').doc(user.uid).update({
-        'userMoods': FieldValue.arrayUnion([moodEntry.toMap()]),
-      });
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('userMoods') // ✅ Proper subcollection
+          .doc(moodEntry.id)
+          .set(moodEntry.toMap());
 
       _moods.add(moodEntry);
       notifyListeners();
       Fluttertoast.showToast(msg: "Mood added successfully");
     } catch (e) {
+      Fluttertoast.showToast(msg: "Error saving mood: $e");
       rethrow;
     }
   }
@@ -51,24 +55,17 @@ class MoodProvider with ChangeNotifier {
     }
 
     try {
-      final userDoc = await _firestore.collection('users').doc(user.uid).get();
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('userMoods') // ✅ Subcollection read
+          .orderBy('timestamp', descending: true)
+          .get();
 
-      final data = userDoc.data();
-      if (data == null || !data.containsKey('userMoods')) {
-        _moods.clear();
-        notifyListeners();
-        return;
-      }
-
-      final moodsList = List<Map<String, dynamic>>.from(data['userMoods']);
       _moods.clear();
-
-      for (var moodMap in moodsList) {
-        _moods.add(MoodModel.fromMap(moodMap));
+      for (var doc in snapshot.docs) {
+        _moods.add(MoodModel.fromMap(doc.data()));
       }
-
-      // Sort by timestamp (newest first)
-      _moods.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
       notifyListeners();
     } catch (e) {

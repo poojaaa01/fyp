@@ -58,11 +58,10 @@ class FocusModeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset(
-              AssetsManager.logoApp,
-              height: 32,
-            ),
-            const SizedBox(width: 8),
+            // Image.asset(
+            //   AssetsManager.logoApp,
+            //   height: 32,
+            // ),
             const Text(
               'Focus Mode',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

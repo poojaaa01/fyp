@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fyp/providers/appointment_provider.dart';
 import 'package:fyp/providers/doc_provider.dart';
 import 'package:fyp/providers/focus_session_provider.dart';
+import 'package:fyp/providers/meditation_analysis_provider.dart';
 import 'package:fyp/providers/meditation_provider.dart';
+import 'package:fyp/providers/mood_analysis_provider.dart';
 import 'package:fyp/providers/mood_provider.dart';
 import 'package:fyp/providers/order_provider.dart';
 import 'package:fyp/providers/post_provider.dart';
@@ -14,6 +16,7 @@ import 'package:fyp/screens/auth/forgot_password.dart';
 import 'package:fyp/screens/auth/login.dart';
 import 'package:fyp/screens/auth/register.dart';
 import 'package:fyp/screens/home_screen.dart';
+import 'package:fyp/screens/inner_screen/analysis_screen.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/screens/inner_screen/orders/orders_screen.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
@@ -41,107 +44,101 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FirebaseApp>(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(body: Center(child: CircularProgressIndicator())),
-          );
-        } else if (snapshot.hasError) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) {
+            return ThemeProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return DocProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return AptProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return RecentActivityProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return UserProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return OrderProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return MoodProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return FocusSessionProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return PostProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return MeditationProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return MeditationAnalysisProvider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return MoodAnalysisProvider();
+          },
+        ),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              body: Center(child: SelectableText(snapshot.error.toString())),
+            title: 'Moksha App',
+            theme: Styles.themeData(
+              isDarkTheme: themeProvider.getIsDarkTheme,
+              context: context,
             ),
-          );
-        }
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) {
-                return ThemeProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return DocProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return AptProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return RecentActivityProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return UserProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return OrderProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return MoodProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return FocusSessionProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return PostProvider();
-              },
-            ),
-            ChangeNotifierProvider(
-              create: (_) {
-                return MeditationProvider();
-              },
-            ),
-          ],
-          child: Consumer<ThemeProvider>(
-            builder: (context, themeProvider, child) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Moksha App',
-                theme: Styles.themeData(
-                  isDarkTheme: themeProvider.getIsDarkTheme,
-                  context: context,
-                ),
-                home: const RootScreen(),
-                //home: LoginScreen(),
-                routes: {
-                  DocDetailsScreen.routName:
-                      (context) => const DocDetailsScreen(),
-                  RootScreen.routeName: (context) => const RootScreen(),
-                  RecentActivityScreen.routName:
-                      (context) => const RecentActivityScreen(),
-                  RegisterScreen.routName: (context) => const RegisterScreen(),
-                  LoginScreen.routeName: (context) => const LoginScreen(),
-                  ForgotPasswordScreen.routeName:
-                      (context) => const ForgotPasswordScreen(),
-                  OrdersScreenFree.routeName: (context) => const OrdersScreenFree(),
-                  MoodTrackerScreen.routeName: (context) => const MoodTrackerScreen(),
-                },
-              );
+            home: const RootScreen(),
+            //home: LoginScreen(),
+            routes: {
+              DocDetailsScreen.routName:
+                  (context) => const DocDetailsScreen(),
+              RootScreen.routeName: (context) => const RootScreen(),
+              RecentActivityScreen.routName:
+                  (context) => const RecentActivityScreen(),
+              RegisterScreen.routName: (context) => const RegisterScreen(),
+              LoginScreen.routeName: (context) => const LoginScreen(),
+              ForgotPasswordScreen.routeName:
+                  (context) => const ForgotPasswordScreen(),
+              OrdersScreenFree.routeName: (context) => const OrdersScreenFree(),
+              MoodTrackerScreen.routeName: (
+                  context) => const MoodTrackerScreen(),
+              AnalysisScreen.routeName: (context) => AnalysisScreen(),
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
-}
+  }
 
 class ErrorApp extends StatelessWidget {
   const ErrorApp({super.key});
