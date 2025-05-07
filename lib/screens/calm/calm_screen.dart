@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fyp/screens/calm/meditation_tracks_screen.dart';
+import 'package:intl/intl.dart';
 
 class CalmMainScreen extends StatefulWidget {
   const CalmMainScreen({Key? key}) : super(key: key);
@@ -111,6 +114,47 @@ class _CalmMainScreenState extends State<CalmMainScreen> with TickerProviderStat
     });
   }
 
+  // 🔥 STREAK TRACKING 🔥
+  Future<void> _updateMeditationStreak() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final streakRef = FirebaseFirestore.instance.collection('streaks').doc(user.uid);
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    final doc = await streakRef.get();
+    if (!doc.exists) {
+      await streakRef.set({
+        'lastMeditationDate': today,
+        'meditationStreak': 1,
+      });
+    } else {
+      final data = doc.data()!;
+      final lastDate = data['lastMeditationDate'];
+      final currentStreak = data['meditationStreak'] ?? 0;
+
+      final lastDateTime = DateTime.tryParse(lastDate) ?? DateTime.now();
+      final difference = DateTime.now().difference(lastDateTime).inDays;
+
+      if (difference == 0) {
+        // already counted for today — do nothing
+        return;
+      } else if (difference == 1) {
+        // consecutive day — increment streak
+        await streakRef.update({
+          'lastMeditationDate': today,
+          'meditationStreak': currentStreak + 1,
+        });
+      } else {
+        // missed a day — reset streak
+        await streakRef.update({
+          'lastMeditationDate': today,
+          'meditationStreak': 1,
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -142,6 +186,11 @@ class _CalmMainScreenState extends State<CalmMainScreen> with TickerProviderStat
                 _isBreathingMode = !_isBreathingMode;
                 _stopExercise();
               });
+
+              // 🎯 Track streak when switching to Meditation Mode
+              if (!_isBreathingMode) {
+                _updateMeditationStreak();
+              }
             },
           ),
           const SizedBox(width: 10),

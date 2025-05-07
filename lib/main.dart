@@ -10,6 +10,7 @@ import 'package:fyp/providers/mood_provider.dart';
 import 'package:fyp/providers/order_provider.dart';
 import 'package:fyp/providers/post_provider.dart';
 import 'package:fyp/providers/recent_activity_provider.dart';
+import 'package:fyp/providers/streak_provider.dart';
 import 'package:fyp/providers/user_provider.dart';
 import 'package:fyp/root_screen.dart';
 import 'package:fyp/screens/auth/forgot_password.dart';
@@ -20,7 +21,9 @@ import 'package:fyp/screens/inner_screen/analysis_screen.dart';
 import 'package:fyp/screens/inner_screen/doc_details.dart';
 import 'package:fyp/screens/inner_screen/orders/orders_screen.dart';
 import 'package:fyp/screens/inner_screen/recent_activity.dart';
+import 'package:fyp/screens/inner_screen/streak_screen.dart';
 import 'package:fyp/screens/mood/mood_tracker_screen.dart';
+import 'package:fyp/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/providers/theme_provider.dart';
 import 'consts/theme_data.dart';
@@ -106,6 +109,11 @@ class MyApp extends StatelessWidget {
             return MoodAnalysisProvider();
           },
         ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return MeditationStreakProvider();
+          },
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -132,6 +140,8 @@ class MyApp extends StatelessWidget {
               MoodTrackerScreen.routeName: (
                   context) => const MoodTrackerScreen(),
               AnalysisScreen.routeName: (context) => AnalysisScreen(),
+              StreakScreen.routeName: (context) => StreakScreen(),
+              ProfileScreen.routeName: (context) => ProfileScreen(),
             },
           );
         },

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/assets_manager.dart';
 import '../../models/meditation_track.dart';
+import '../../services/streak_service.dart';
 
 class MeditationPlayerScreen extends StatefulWidget {
   final MeditationTrack track;
@@ -99,6 +100,25 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
         'userId': user.uid,
         'timestamp': DateTime.now(),
       });
+      await StreakService.updateMeditationStreak();
+      // ✅ Show SnackBar after streak update
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Meditation session logged and streak updated!',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.black87,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/profile-screen',
+              (route) => false,
+        );
+      }
     }
   }
 

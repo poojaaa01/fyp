@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -16,9 +17,11 @@ import '../providers/user_provider.dart';
 import '../widgets/title_text.dart';
 import 'auth/login.dart';
 import 'inner_screen/analysis_screen.dart';
+import 'inner_screen/streak_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  static const routeName = '/profile-screen';
+const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -31,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
   UserModel? userModel;
   bool _isLoading = true;
+  int streakCount = 0;
 
   Future<void> fetchUserInfo() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -52,10 +56,38 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
     }
   }
 
+  void fetchStreak() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final streakRef = FirebaseFirestore.instance
+        .collection('streaks')  // ✅ Correct collection
+        .doc(user.uid);
+
+    final snapshot = await streakRef.get();
+
+    if (snapshot.exists) {
+      setState(() {
+        streakCount = snapshot['meditationStreak'] ?? 0;  // ✅ 'meditationStreak'
+      });
+    } else {
+      setState(() {
+        streakCount = 0;
+      });
+    }
+  }
+
+  Future<void> refreshProfile() async {
+    await fetchUserInfo();
+    setState(() {});
+  }
+
+
   @override
   void initState() {
-    fetchUserInfo();
     super.initState();
+    fetchUserInfo();
+    fetchStreak();
   }
 
   @override
@@ -147,7 +179,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                       child: CustomListTile(
                         text: "Streaks",
                         imagePath: AssetsManager.progress,
-                        function: () {},
+                        function: () {
+                          Navigator.pushNamed(
+                            context,
+                            StreakScreen.routeName,
+                          );
+                        },
                       ),
                     ),
                     Visibility(
