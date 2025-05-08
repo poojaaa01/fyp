@@ -59,13 +59,18 @@ class AptProvider with ChangeNotifier {
       if (data == null || !data.containsKey('userAppointment')) {
         return;
       }
-      final leng = userDoc.get("userAppointment").length;
-      for (int index = 0; index < leng; index++) {
+      final List<dynamic> appointments = data['userAppointment'];
+
+      _aptItems.clear();
+      for (var appointment in appointments) {
+        final String appointmentId = appointment['appointmentId'];
+        final String docId = appointment['docId'];
+
         _aptItems.putIfAbsent(
-          userDoc.get("userAppointment")[index]['docId'],
-          () => AptModel(
-            aptId: userDoc.get("userAppointment")[index]['appointmentId'],
-            docId: userDoc.get("userAppointment")[index]['docId'],
+          docId,
+              () => AptModel(
+            aptId: appointmentId,
+            docId: docId,
           ),
         );
       }
