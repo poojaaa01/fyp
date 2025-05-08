@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(AssetsManager.logoApp),
         ),
-        title: const AppNameTextWidget(fontSize: 20),
+        title: AppNameTextWidget(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

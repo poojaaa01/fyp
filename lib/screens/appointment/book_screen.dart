@@ -123,6 +123,7 @@ class _BookScreenState extends State<BookScreen> {
             .set({
               'bookId': bookId,
               'userId': uid,
+              'userEmail': user.email,
               'docId': value.docId,
               "docTitle": getCurrDoctor!.docTitle,
               'price': double.parse(getCurrDoctor.docPrice),

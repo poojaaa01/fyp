@@ -28,6 +28,7 @@ class OrderProvider with ChangeNotifier {
             price: element.get('price').toString(),
             imageUrl: element.get('imageUrl'),
             bookDate: element.get('bookDate'),
+            userEmail: element.data().containsKey('userEmail') ? element.get('userEmail') : '',
           ));
         }
       });
