@@ -255,16 +255,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             SubtitleTextWidget(label: "New here?"),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(RegisterScreen.routName);
+                              },
                               child: const SubtitleTextWidget(
                                 label: "Sign up now",
                                 fontStyle: FontStyle.italic,
                                 textDecoration: TextDecoration.underline,
                               ),
-                              onLongPress: () {
-                                Navigator.of(context)
-                                    .pushNamed(RegisterScreen.routName);
-                              },
                             ),
                           ],
                         ),
