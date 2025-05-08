@@ -133,10 +133,10 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         color: Theme
                             .of(context)
                             .cardColor,
-                        border: Border.all(
-                          color: Colors.deepPurple,
-                          width: 3,
-                        ),
+                        // border: Border.all(
+                        //   color: Colors.deepPurple,
+                        //   width: 3,
+                        // ),
                         image: DecorationImage(
                           image: NetworkImage(userModel!.userImage),
                           fit: BoxFit.fill,
@@ -200,14 +200,14 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         },
                       ),
                     ),
-                    Visibility(
-                      visible: userModel == null ? false : true,
-                      child: CustomListTile(
-                        text: "Set a reminder",
-                        imagePath: AssetsManager.reminder,
-                        function: () {},
-                      ),
-                    ),
+                    // Visibility(
+                    //   visible: userModel == null ? false : true,
+                    //   child: CustomListTile(
+                    //     text: "Set a reminder",
+                    //     imagePath: AssetsManager.reminder,
+                    //     function: () {},
+                    //   ),
+                    // ),
                     Visibility(
                       visible: userModel == null ? false : true,
                       child: CustomListTile(

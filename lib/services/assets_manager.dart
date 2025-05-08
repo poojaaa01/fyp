@@ -34,9 +34,10 @@ class AssetsManager {
   static String noApt = "$appImagesPath/apt.jpg";
 
   // Banners
-  static String banner1 = "$bannersImagesPath/q1.jpg";
-  static String banner2 = "$bannersImagesPath/q2.jpg";
+  static String banner1 = "$bannersImagesPath/q1.png";
+  static String banner2 = "$bannersImagesPath/q2.png";
   static String banner3 = "$bannersImagesPath/q3.png";
+  static String banner4 = "$bannersImagesPath/q4.png";
 
   // start_journey path
   static String calm = "$start_journeyImagesPath/calm.png";

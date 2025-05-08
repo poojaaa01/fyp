@@ -9,6 +9,7 @@ class AppConstants {
     AssetsManager.banner1,
     AssetsManager.banner2,
     AssetsManager.banner3,
+    AssetsManager.banner4,
   ];
 
   static List<StartModel> startList = [
