@@ -102,6 +102,78 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void showFeaturesDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "🧭 Moksha Features",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  featureItem(Icons.emoji_emotions, "Mood Tracker"),
+                  const Divider(),
+                  featureItem(Icons.self_improvement, "Meditation"),
+                  const Divider(),
+                  featureItem(Icons.shield, "Focus Mode"),
+                  const Divider(),
+                  featureItem(Icons.groups, "Community Sharing"),
+                  const Divider(),
+                  featureItem(Icons.stacked_bar_chart, "Progress Analysis"),
+                  const Divider(),
+                  featureItem(Icons.confirmation_number_outlined, "Book an Appointment"),
+                  const Divider(),
+                  featureItem(Icons.local_fire_department, "Streak"),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    icon: const Icon(Icons.close),
+                    label: const Text("Close"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white60,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget featureItem(IconData icon, String title) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.teal),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+      ),
+      onTap: () {
+        // Optional: Add actual navigation if you want direct access here too
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -210,19 +282,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 16.0),
                         SubtitleTextWidget(
-                          label: "Or connect using".toUpperCase(),
+                          label: "Or Just Try These First".toUpperCase(),
                         ),
                         const SizedBox(height: 16.0),
                         SizedBox(
                           height: kBottomNavigationBarHeight + 10,
                           child: Row(
                             children: [
-                              const Expanded(
+                              Expanded(
                                 flex: 2,
                                 child: SizedBox(
                                   height: kBottomNavigationBarHeight + 10,
-                                  child: FittedBox(
-                                    child: GoogleButton(),
+                                  child: ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(12.0),
+                                      backgroundColor: Colors.white60,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    icon: const Icon(Icons.explore),
+                                    label: const Text("Explore Moksha"),
+                                    onPressed: () {
+                                      showFeaturesDialog(context);
+                                    },
                                   ),
                                 ),
                               ),
@@ -238,10 +321,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
                                     ),
-                                    child: const Text("Guest?"),
+                                    child: const Text("Guest Mode"),
                                     onPressed: () async {
-                                      Navigator.of(context)
-                                          .pushNamed('/RootScreen');
+                                      Navigator.of(context).pushNamed('/RootScreen');
                                     },
                                   ),
                                 ),
