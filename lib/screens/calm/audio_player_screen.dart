@@ -52,7 +52,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
       if (_remainingTime.inSeconds <= 0) {
         timer.cancel();
         _player.stop();
-        _logMeditationSession(); // Log when time runs out
+        _logMeditationSession();
         setState(() {
           isPlaying = false;
         });
@@ -70,7 +70,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
 
   String get timeLeftText {
     if (widget.selectedMinutes == 0 && widget.selectedSeconds == 0) {
-      return "No Timer";
+      return "No Timer Set";
     } else {
       return "${_remainingTime.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_remainingTime.inSeconds.remainder(60).toString().padLeft(2, '0')}";
     }
@@ -85,12 +85,10 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
     final int elapsedSessionDuration =
         totalSessionDuration - _remainingTime.inSeconds;
 
-    // Calculate start and end time
-    DateTime startTime = DateTime.now();
-    DateTime endTime = startTime.add(Duration(seconds: elapsedSessionDuration));
-
-    // Log only if the session duration is positive
     if (elapsedSessionDuration > 0) {
+      DateTime startTime = DateTime.now();
+      DateTime endTime = startTime.add(Duration(seconds: elapsedSessionDuration));
+
       await FirebaseFirestore.instance.collection('meditation_history').add({
         'trackName': widget.track.title,
         'sessionDurationSeconds': elapsedSessionDuration,
@@ -100,8 +98,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
         'userId': user.uid,
         'timestamp': DateTime.now(),
       });
+
       await StreakService.updateMeditationStreak();
-      // ✅ Show SnackBar after streak update
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -122,7 +121,6 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
     }
   }
 
-
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
@@ -130,12 +128,39 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
-
   @override
   void dispose() {
     _player.dispose();
     _timer?.cancel();
     super.dispose();
+  }
+
+  void _handlePlayButtonPressed() {
+    if (widget.selectedMinutes == 0 && widget.selectedSeconds == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please select a timer before starting your meditation.',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.black87,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      isPlaying = !isPlaying;
+    });
+
+    if (isPlaying) {
+      _player.play();
+      _startTimer();
+    } else {
+      _player.pause();
+      _pauseTimer();
+    }
   }
 
   @override
@@ -196,20 +221,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen> {
                           : Icons.play_circle_filled,
                       color: Colors.white,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        isPlaying = !isPlaying;
-                      });
-
-                      if (isPlaying) {
-                        _player.play();
-                        _startTimer();
-                        _logMeditationSession(); // log at start too if you want
-                      } else {
-                        _player.pause();
-                        _pauseTimer();
-                      }
-                    },
+                    onPressed: _handlePlayButtonPressed,
                   ),
                 ],
               ),
