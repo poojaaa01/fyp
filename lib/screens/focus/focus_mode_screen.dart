@@ -64,7 +64,10 @@ class FocusModeScreen extends StatelessWidget {
             // ),
             const Text(
               'Focus Mode',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                color: Colors.white,),
             ),
           ],
         ),
@@ -75,7 +78,7 @@ class FocusModeScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB2FEFA), Color(0xFF0ED2F7)],
+            colors: [Color(0xFF1E3C72), Color(0xFF2A5298)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

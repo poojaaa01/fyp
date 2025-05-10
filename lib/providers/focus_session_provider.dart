@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
 import 'recent_activity_provider.dart';
 import 'package:provider/provider.dart';
 
 class FocusSession {
-  final DateTime startTime;
+  DateTime startTime;
 
   FocusSession() : startTime = DateTime.now();
 }
@@ -14,6 +13,7 @@ class FocusSessionProvider with ChangeNotifier {
   FocusSession? _currentSession;
   Timer? _timer;
   Duration _elapsed = Duration.zero;
+  Duration _elapsedBeforePause = Duration.zero;
   bool _isRunning = false;
 
   FocusSession? get currentSession => _currentSession;
@@ -23,10 +23,11 @@ class FocusSessionProvider with ChangeNotifier {
   void startSession() {
     _currentSession = FocusSession();
     _elapsed = Duration.zero;
+    _elapsedBeforePause = Duration.zero;
     _isRunning = true;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _elapsed = DateTime.now().difference(_currentSession!.startTime);
+      _elapsed = DateTime.now().difference(_currentSession!.startTime) + _elapsedBeforePause;
       notifyListeners();
     });
 
@@ -34,7 +35,10 @@ class FocusSessionProvider with ChangeNotifier {
   }
 
   void pauseSession() {
+    if (_currentSession == null) return;
+
     _timer?.cancel();
+    _elapsedBeforePause += DateTime.now().difference(_currentSession!.startTime);
     _isRunning = false;
     notifyListeners();
   }
@@ -42,9 +46,11 @@ class FocusSessionProvider with ChangeNotifier {
   void resumeSession() {
     if (_currentSession == null) return;
 
+    _currentSession!.startTime = DateTime.now();
     _isRunning = true;
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _elapsed = DateTime.now().difference(_currentSession!.startTime);
+      _elapsed = DateTime.now().difference(_currentSession!.startTime) + _elapsedBeforePause;
       notifyListeners();
     });
 
@@ -55,14 +61,15 @@ class FocusSessionProvider with ChangeNotifier {
     _timer?.cancel();
 
     if (_currentSession != null) {
-      final duration = DateTime.now().difference(_currentSession!.startTime);
+      final totalDuration = _elapsed; // Use the actual tracked elapsed time
 
       Provider.of<RecentActivityProvider>(context, listen: false)
-          .addFocusActivity(duration: "${duration.inMinutes} minutes");
+          .addFocusActivity(duration: "${totalDuration.inMinutes} minutes");
     }
 
     _currentSession = null;
     _elapsed = Duration.zero;
+    _elapsedBeforePause = Duration.zero;
     _isRunning = false;
     notifyListeners();
   }

@@ -20,7 +20,7 @@ class _OrdersScreenFreeState extends State<OrdersScreenFree> {
   Widget build(BuildContext context) {
     final ordersProvider = Provider.of<OrderProvider>(context);
     return Scaffold(
-      appBar: AppBar(title: const TitlesTextWidget(label: 'Placed orders')),
+      appBar: AppBar(title: const TitlesTextWidget(label: 'Appointments to be confirmed')),
       body: FutureBuilder(
         future: ordersProvider.fetchOrder(),
         builder: (context, snapshot) {

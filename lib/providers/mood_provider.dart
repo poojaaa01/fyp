@@ -29,12 +29,18 @@ class MoodProvider with ChangeNotifier {
     );
 
     try {
+      debugPrint("MoodEntry Map: ${moodEntry.toMap()}");
       await _firestore
           .collection('users')
           .doc(user.uid)
-          .collection('userMoods') // ✅ Proper subcollection
+          .collection('userMoods')
           .doc(moodEntry.id)
-          .set(moodEntry.toMap());
+          .set(moodEntry.toMap())
+          .then((_) {
+        debugPrint("Mood saved to Firestore successfully");
+      }).catchError((error) {
+        debugPrint("Firestore error: $error");
+      });
 
       _moods.add(moodEntry);
       notifyListeners();

@@ -176,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TitlesTextWidget(label: "Welcome back!"),
+                        TitlesTextWidget(label: "Welcome!"),
                         SubtitleTextWidget(
                           label:
                           "Sign up to begin your journey to a calmer mind.",
